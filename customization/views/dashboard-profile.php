@@ -1,0 +1,177 @@
+<?php
+/*
+<pre>
+<?php print_r( get_user_meta($user_info->ID) ); ?>
+</pre>  
+*/
+?>
+
+<div class="profile-wrapper">
+
+<form method="post" id="profile_edit" action="<?php echo admin_url('admin-ajax.php'); ?>">
+	<p>
+		<label>Chapter</label> 
+		<input type="text" name="chapter" value="<?php echo get_the_title($user_info->chapter); ?>" readonly="1" class="form-control">
+	</p>	
+	<p>
+		<span id="imgHolder" style="display:block"><?php  echo  ($profilePic!="") ? wp_get_attachment_image($profilePic) : ''; ?></span>
+		<input type="hidden" name="j_photo" value="<?php echo $profilePic; ?>" /> <input class="btn btn-default photoUpload" type="button" value="Add Profile Image" />
+		<button class="btn-save-image">Save Profile Image</button>
+	</p>
+	<input type="hidden" name="userID" value="<?php echo $user_info->ID; ?>">
+	<input type="hidden" name="action" value="edit_profile">
+	<?php wp_nonce_field( 'edit_profile_nonce', 'nonce_field' ); ?>
+</form>
+
+<div class="clearfix"></div>
+
+<hr/>
+
+<h2>Personal Information</h2>
+
+<div class="profile-form-wrapper">
+  <form method="post" id="billing_phone" action="<?php echo admin_url('admin-ajax.php'); ?>">
+
+        <p><label>First Name:</label> <input type="text" name="billing_first_name" value="<?php echo get_user_meta($user_info->ID,'billing_first_name',true); ?>" class="form-control" /></p>
+        <p><label>Last Name:</label> <input type="text" name="billing_last_name" value="<?php echo get_user_meta($user_info->ID,'billing_last_name',true); ?>" class="form-control" /></p>
+        <p><label>Phone:</label> <input type="text" name="billing_phone" value="<?php echo get_user_meta($user_info->ID,'billing_phone',true); ?>" class="form-control" /></p>
+        <p><label>Address 1:</label> <input type="text" name="billing_address_1" value="<?php echo get_user_meta($user_info->ID,'billing_address_1',true); ?>" class="form-control" /></p>
+        <p><label>Address 2:</label> <input type="text" name="billing_address_2" value="<?php echo get_user_meta($user_info->ID,'billing_address_2',true); ?>" class="form-control" /></p>
+        <p><label>City:</label> <input type="text" name="billing_city" value="<?php echo get_user_meta($user_info->ID,'billing_city',true); ?>" class="form-control" /></p>
+        <p><label>State:</label> <input type="text" name="billing_state" value="<?php echo get_user_meta($user_info->ID,'billing_state',true); ?>" class="form-control" /></p>        
+        <p><label>Zip:</label> <input type="text" name="billing_postcode" value="<?php echo get_user_meta($user_info->ID,'billing_postcode',true); ?>" class="form-control" /></p>
+        <p><label>Country:</label> <input type="text" name="billing_country" value="<?php echo get_user_meta($user_info->ID,'billing_country',true); ?>" class="form-control" /></p>
+
+
+      <input type="hidden" name="userID" value="<?php echo $user_info->ID; ?>">
+      <input type="hidden" name="action" value="billing_phone">
+      <?php wp_nonce_field( 'billing_phone_nonce', 'phone_nonce_field' ); ?>
+      <button class="bttn bttn-alt" id="saveUserDetails">Save User Details</button>  
+  </form>  
+</div>
+
+<p>&nbsp;</p>
+<hr/>
+
+<h2>Newsletter Options</h2>
+
+<div class="newsletter-select">
+  <form method="post" id="newsletter_opt" action="<?php echo admin_url('admin-ajax.php'); ?>">
+    <?php $checked  = ( get_user_meta($user_info->ID,'newslatter',true) === "on" )? ' checked="checked"' : ""; ?>
+    <?php $checked2  = ( get_user_meta($user_info->ID,'global_newslatter',true) === "on" )? ' checked="checked"' : ""; ?>
+      <p><input type="checkbox" id="newslatter" name="newslatter" value="on" <?php echo $checked;?>> Subscribe to Chapter Newsletter?</p>
+      <p><input type="checkbox" id="global_newslatter" name="global_newslatter" value="on" <?php echo $checked2;?>> Subscribe to Global Newsletter?</p>
+      <input type="hidden" name="userID" value="<?php echo $user_info->ID; ?>">
+      <input type="hidden" name="action" value="newsletter_opt">
+      <?php wp_nonce_field( 'newsletter_opt_nonce', 'newsletter_nonce_field' ); ?>
+      <button class="bttn bttn-alt">Save Newsletter Subscription</button>
+  </form>  
+</div>
+
+<?php 
+/*
+<div style="background: #cacaca; padding: 15px 8px 8px">
+  <form method="post" id="account_phone" action="<?php echo admin_url('admin-ajax.php'); ?>">
+    <div style="background: #cacaca; padding: 15px 8px 8px">
+      <p><label>Phone Number</label><input type="text" id="newslatter" name="billing_phone" value="<?php echo get_user_meta($user_info->ID,'billing_phone',true); ?>" class="form-control"></p>
+      <input type="hidden" name="userID" value="<?php echo $user_info->ID; ?>">
+      <input type="hidden" name="action" value="billing_phone">
+      <?php wp_nonce_field( 'account_phone_nonce', 'phone_nonce_field' ); ?>
+      <div align="right"><button class="btn btn-primary">Save Phone#</button></div>    
+    </div>
+  </form>  
+</div>  
+*/ ?>
+
+<?php // echo do_shortcode('[pms-subscriptions]'); ?>
+
+ <p>&nbsp;</p>
+ <hr/>
+
+<?php if( @$card_args->chapter !== "") : ?>
+  <h2>Your Membership Card <small>(Click to download)</small></h2> 
+    
+  <a href="<?php echo str_replace( array("\\", $_SERVER['DOCUMENT_ROOT']),  array('/', home_url('/') ) , $badge); ?>" download>
+	<img src="<?php echo str_replace( array("\\", $_SERVER['DOCUMENT_ROOT']),  array('/', home_url('/') ) , $badge); ?>" class="img-responsive">
+  </a>
+<?php endif; ?>
+
+</div>
+
+<script type="text/javascript">
+function AppendImage(imageUrl){
+  //jQuery("#imgHolder").empty().prepend('<img src="'+imageUrl.replace(/^(.+)\.([^.]+)$/, '$1-150x150.$2')+'">');
+  jQuery("#imgHolder").empty().prepend('<img src="'+imageUrl+'" style="width: 150px; height: auto">');
+}
+
+
+jQuery(document).ready( function($) {
+
+	$('#profile_edit').on('submit', function(e) {
+		e.preventDefault();
+ 		var $form = $(this);
+ 		$.post($form.attr('action'), $form.serialize(), function(data) {
+			$form.append(data);
+		}, 'json');
+	});
+
+
+  $('#newsletter_opt').on('submit', function(e) {
+    e.preventDefault();
+    var $form = $('#newsletter_opt');
+      $.post($form.attr('action'), $form.serialize(), function(data) {
+        $form.append(data);
+      }, 'json');
+  });
+
+  $('#billing_phone').on('submit', function(e) {
+    $("#saveUserDetails").attr("disabled", "disabled");    
+    e.preventDefault();
+    var $form = $('#billing_phone');
+      $.post($form.attr('action'), $form.serialize(), function(data) {
+        $form.append(data);
+        $("#saveUserDetails").removeAttr("disabled");        
+      }, 'json');
+  });  
+
+	//photo
+    jQuery(".photoUpload").click(function () {
+    uploadID = jQuery(this).prev('input');
+    var formfield = jQuery('#upload_image').attr('name');
+    tb_show('', '<?php echo get_site_url(); ?>/wp-admin/media-upload.php?type=image&amp;TB_iframe=true');
+    return false;
+    });
+
+  window.send_to_editor = function(html) {
+
+
+    imgurl = jQuery('<div>'+html+'</div>').find('img').attr('src');
+    class_string = jQuery('<div>'+html+'</div>').find('img').attr('class');
+    var pathArray = html.match(/<media>(.*)<\/media>/);
+    var mediaUrl = pathArray !== null && typeof pathArray[1] != 'undefined' ? pathArray[1] : '';
+
+
+    var classes         = class_string.split( /\s+/ );
+    var image_id        = 0;
+
+    for ( var i = 0; i < classes.length; i++ ) {
+        var source = classes[i].match(/wp-image-([0-9]+)/);
+        if ( source && source.length > 1 ) {
+            image_id = parseInt( source[1] );
+        }
+    }    
+
+    if ( imgurl ){
+      uploadID.val(image_id);
+      AppendImage(imgurl);
+    }
+
+      tb_remove();
+
+  };	
+
+})
+
+
+</script>	
+

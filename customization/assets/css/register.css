@@ -1,0 +1,60 @@
+.pms-field-subscriptions {
+	background: #f1f1f1;
+	border: 1px solid #ededed;
+	padding: 30px;
+	margin-bottom: 20px;	
+	float: none;
+	clear: both;
+	display: table;
+	width: 100%;
+}
+
+
+
+.pms-user-login-field,
+.pms-user-email-field,
+.pms-first-name-field, 
+.pms-last-name-field,
+.pms-pass1-field,
+.pms-pass2-field {
+	background: #f1f1f1;
+	padding: 30px 30px 0;
+	margin-bottom: 0 !important;
+}
+.pms-first-name-field, 
+.pms-last-name-field,
+.pms-pass1-field,
+.pms-pass2-field {
+	float: left;
+	width: 50%;
+}
+
+.pms-pass1-field,
+.pms-pass2-field {
+	padding-bottom: 30px;
+	margin-bottom: 60px !important;
+}
+
+.pms-field-subscriptions::before {
+	content: 'Membership Level';
+	font-size: 20px;
+	font-weight: 500;
+	margin: 0 0 30px;
+	color: #2e2e2e;	
+	display: block;
+}
+
+
+.pms-user-login-field::before {
+	content: 'Account information';
+	font-size: 20px;
+	font-weight: 500;
+	margin: 0 0 30px;
+	color: #2e2e2e;	
+	display: block;
+}
+
+.pms-field-subscriptions .pms-subscription-plan {
+	float: left;
+	width: 50%;
+}

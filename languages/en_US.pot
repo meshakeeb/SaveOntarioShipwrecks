@@ -1,0 +1,293 @@
+﻿msgid ""
+msgstr ""
+"Project-Id-Version: Hunter WordPress Theme\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-30 10:32-0700\n"
+"PO-Revision-Date: 2013-05-30 10:32-0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;__;esc_attr__;esc_attr_e;esc_html__;esc_html_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: y:\\hunter\n"
+
+#: /hunter/404.php
+msgid "404"
+msgstr ""
+
+#: /hunter/404.php
+msgid "Page Not Found"
+msgstr ""
+
+#: /hunter/404.php
+msgid "We're Sorry! The page you are looking for doesn't seem to exist."
+msgstr ""
+
+#: /hunter/404.php
+msgid "Back to Home Page."
+msgstr ""
+
+#: /hunter/archive.php
+msgid "Author archive:"
+msgstr ""
+
+#: /hunter/archive.php
+msgid "Blog Archives"
+msgstr ""
+
+#: /hunter/archive.php, index.php, search.php, template-blog.php
+msgid "Read More"
+msgstr ""
+
+#: /hunter/archive.php
+msgid "Daily Archives: %s"
+msgstr ""
+
+#: /hunter/archive.php
+msgid "Monthly Archives: %s"
+msgstr ""
+
+#: /hunter/archive.php
+msgid "Yearly Archives: %s"
+msgstr ""
+
+#: /hunter/archive.php
+msgid "Category Archives: %s"
+msgstr ""
+
+#: /hunter/archive.php
+msgid "Search Results for: %s"
+msgstr ""
+
+#: /hunter/archive.php
+msgid "ERROR PAGE 404"
+msgstr ""
+
+#: /hunter/archive.php, single.php, template-blog.php, index.php, search.php
+msgid "0 Comments"
+msgstr ""
+
+#: /hunter/archive.php, single.php, template-blog.php, index.php, search.php
+msgid "1 Comment"
+msgstr ""
+
+#: /hunter/archive.php, single.php, template-blog.php, index.php, search.php
+msgid "% Comments"
+msgstr ""
+
+#: /hunter/comments.php
+msgid "0 thoughts"
+msgstr ""
+
+#: /hunter/comments.php
+msgid "1 thought"
+msgstr ""
+
+#: /hunter/comments.php
+msgid "% thoughts"
+msgstr ""
+
+#: /hunter/comments.php
+msgid "<span class='meta-nav'>&larr;</span> Older Comments"
+msgstr ""
+
+#: /hunter/comments.php
+msgid "Newer Comments <span class='meta-nav'>&rarr;</span>"
+msgstr ""
+
+#: /hunter/comments.php
+msgid "on"
+msgstr ""
+
+#: /hunter/comments.php
+msgid "This post is password protected. Enter the password to view any comments."
+msgstr ""
+
+#: /hunter/comments.php
+msgid "Comments are closed."
+msgstr ""
+
+#: /hunter/footer.php
+msgid "LinkedIn"
+msgstr ""
+
+#: /hunter/footer.php
+msgid "Facebook"
+msgstr ""
+
+#: /hunter/footer.php
+msgid "Twitter"
+msgstr ""
+
+#: /hunter/footer.php
+msgid "Flickr"
+msgstr ""
+
+#: /hunter/footer.php
+msgid "Instagram"
+msgstr ""
+
+#: /hunter/footer.php
+msgid "Dribbble"
+msgstr ""
+
+#: /hunter/footer.php
+msgid "Pinterest"
+msgstr ""
+
+#: /hunter/footer.php
+msgid "RSS Feed"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Name"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "E-Mail"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Website"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Comment"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "You must be <a href=\"%s\">logged in</a> to post a comment."
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Logged in as <a href=\"%1$s\">%2$s</a>. <a href=\"%3$s\" title=\"Log out of this account\">Log out?</a><br /><br />"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Leave Comment"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Leave a Reply to %s"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Cancel reply"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Add Comment"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "You may use these <abbr title=\"HyperText Markup Language\">HTML</abbr> tags and attributes:  <code>&lt;a href=\"\" title=\"\"&gt; &lt;strong&gt;<br />&lt;abbr title=\"\"&gt; &lt;acronym title=\"\"&gt; &lt;b&gt; &lt;blockquote cite=\"\"&gt; <br />&lt;cite&gt; &lt;code&gt; &lt;del datetime=\"\"&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=\"\"&gt; &lt;strike&gt; </code>"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Leave a Reply"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Your email address will not be published. Required fields are marked"
+msgstr ""
+
+#: /hunter/functions.php
+msgid "Post Comment"
+msgstr ""
+
+#: /hunter/header.php
+msgid "Page %s"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "View More Projects"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "View All Posts"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "Previous"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "Next"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "Overview"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "Company"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "Categories"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "Skills"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "Visit Website"
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "Related Projects"
+msgstr ""
+
+#: /hunter/single-portfolio.php, search.php
+msgid "No posts found."
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "What Client Says..."
+msgstr ""
+
+#: /hunter/single-portfolio.php
+msgid "More Details"
+msgstr ""
+
+#: /hunter/template-contact.php
+msgid "Contact Us"
+msgstr ""
+
+#: /hunter/template-contact.php
+msgid "Your Name *"
+msgstr ""
+
+#: /hunter/template-contact.php
+msgid "Your Email *"
+msgstr ""
+
+#: /hunter/template-contact.php
+msgid "Your Website"
+msgstr ""
+
+#: /hunter/template-contact.php
+msgid "Subject"
+msgstr ""
+
+#: /hunter/template-contact.php
+msgid "Message *"
+msgstr ""
+
+#: /hunter/template-contact.php
+msgid "Submit Form"
+msgstr ""
+
+#: all portfolio templates
+msgid "All"
+msgstr ""

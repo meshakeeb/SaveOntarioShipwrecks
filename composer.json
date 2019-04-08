@@ -1,0 +1,22 @@
+{
+	"name": "boltmedia/ontario",
+	"type": "wordpress-theme",
+	"require": {
+	},
+	"authors": [
+		{
+			"name": "Shakeeb Ahmed",
+			"email": "me@shakeebahmed.com"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"Ontario\\": "includes/"
+		},
+		"classmap" : [ "includes/" ],
+		"files": [ ]
+	},
+	"config": {
+		"optimize-autoloader": true
+	}
+}

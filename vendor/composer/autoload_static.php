@@ -7,14 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInit9cfcc2985893d6e5c1499993620aacf9
 {
     public static $prefixLengthsPsr4 = array (
-        'M' => 
+        'O' => 
         array (
-            'Munipay\\' => 8,
+            'Ontario\\' => 8,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Munipay\\' => 
+        'Ontario\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',
         ),
@@ -23,6 +23,7 @@ class ComposerStaticInit9cfcc2985893d6e5c1499993620aacf9
     public static $classMap = array (
         'Ontario' => __DIR__ . '/../..' . '/includes/class-ontario.php',
         'Ontario\\Shortcodes' => __DIR__ . '/../..' . '/includes/class-shortcodes.php',
+        'Ontario\\Subscription' => __DIR__ . '/../..' . '/includes/class-subscription.php',
         'Ontario\\Theme_Setup' => __DIR__ . '/../..' . '/includes/class-theme-setup.php',
         'Ontario\\Traits\\Ajax' => __DIR__ . '/../..' . '/includes/traits/class-ajax.php',
         'Ontario\\Traits\\Hooker' => __DIR__ . '/../..' . '/includes/traits/class-hooker.php',

@@ -3,11 +3,15 @@
  * Family list shortcode.
  */
 
-$current_user_id        = get_current_user_id();
-$memberlist             = get_users([
-	'meta_key'   => 'parent_family_id',
-	'meta_value' => $current_user_id,
-]);
+if ( 1 != get_user_meta( get_current_user_id(), 'parent_id', true ) ) {
+	return;
+}
+$memberlist = get_users(
+	[
+		'meta_key'   => 'parent_family_id',
+		'meta_value' => get_current_user_id(),
+	]
+);
 
 ?>
 <div class="table-responsive">

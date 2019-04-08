@@ -44,7 +44,7 @@ class Shortcodes {
 	 */
 	public function render( $attributes, $content = '', $shortcode ) {
 		$shortcode = str_replace( '_', '-', $shortcode );
-		$template = locate_template( [ 'templates/shortcodes/' . $shortcode . '.php'  ] );
+		$template  = locate_template( [ 'templates/shortcodes/' . $shortcode . '.php' ] );
 		if ( $template ) {
 			ob_start();
 			include $template;

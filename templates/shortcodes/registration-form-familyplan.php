@@ -6,7 +6,7 @@
 $current_member = get_current_user_id();
 $chapter        = absint( get_user_meta( $current_member, 'chapter', true ) );
 
-if ( isset($_POST['submit'] ) ) {
+if ( isset( $_POST['submit'] ) ) {
 	$reg_errors = new WP_Error;
 
 	// Sanitize user form input.
@@ -29,7 +29,7 @@ if ( isset($_POST['submit'] ) ) {
 	}
 
 	if ( username_exists( $username ) ) {
-		$reg_errors->add('user_name', 'Sorry, that username already exists!');
+		$reg_errors->add( 'user_name', 'Sorry, that username already exists!' );
 	}
 
 	if ( ! is_email( $email ) ) {
@@ -61,24 +61,7 @@ if ( isset($_POST['submit'] ) ) {
 
 		update_user_meta( $user, 'chapter', $chapter );
 		update_user_meta( $user, 'billing_first_name', $first_name );
-		update_user_meta( $user, 'billing_last_name', $last_name );		
-
-
-		/*
-		$role_by_chapter = [
-			500 => 'windsor',
-			499 => 'toronto',
-			498 => 'thousand_islands',
-			497 => 'superior',
-			495 => 'ottawa',
-			494 => 'manitoulin',
-			493 => 'huron_shores',
-			492 => 'hamilton',
-			491 => 'barrie',
-		];
-
-		$role2 = $role_by_chapter[ $chapter ];
-		*/
+		update_user_meta( $user, 'billing_last_name', $last_name );
 
 		// Get subscription plan.
 		$current_member       = get_current_user_id();
@@ -89,37 +72,31 @@ if ( isset($_POST['submit'] ) ) {
 			'subscription_plan_id' => $subscription_plan->id,
 			'expiration_date'      => $subscription_plan->get_expiration_date(),
 			'status'               => $member_subscriptions[0]->status,
-			'start_date'           => $member_subscriptions[0]->start_date
+			'start_date'           => $member_subscriptions[0]->start_date,
 		);
 
 		$member_subscription = new PMS_Member_Subscription();
 		$inserted            = $member_subscription->insert( $subscription_data );
-		
-
 
 		add_user_meta( $user, 'family_plan_member', '1' );
 		add_user_meta( $user, 'parent_family_id', $current_member );
 		$u = new WP_User( $user );
 		add_user_meta( $current_member, 'parent_id', '1' );
-		
-		//$u->add_role( $role2 );
 
-		$family = get_option('email_family');
+		$family    = get_option( 'email_family' );
+		$user_info = get_userdata( $current_member );
 
-		$user_info = get_userdata($current_member);
-
-		$headers = null;
+		$headers  = null;
 		$headers .= 'From: Save Ontario Shipwrecks <wordpress@saveontarioshipwrecks.ca>' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
-        $filter_search = array('{parent_name}', '{name}', '{member_login}', '{member_pass}');
-        $filter_replace = array( get_user_meta($current_member,'billing_first_name',true), get_user_meta($user,'billing_first_name',true) , $username, $password);
+		$filter_search  = array( '{parent_name}', '{name}', '{member_login}', '{member_pass}' );
+		$filter_replace = array( get_user_meta( $current_member, 'billing_first_name', true ), get_user_meta( $user, 'billing_first_name', true ), $username, $password );
 
-        $title = str_replace($filter_search, $filter_replace, $family['title']);
-        $content = str_replace($filter_search, $filter_replace, $family['content']);
+		$title   = str_replace( $filter_search, $filter_replace, $family['title'] );
+		$content = str_replace( $filter_search, $filter_replace, $family['content'] );
 
-
-		wp_mail( $email, $title, wpautop($content), $headers );
+		wp_mail( $email, $title, wpautop( $content ), $headers );
 		echo 'Family Member  Added.';
 	} else {
 		echo $reg_errors->get_error_messages();
@@ -144,42 +121,42 @@ if ( isset($_POST['submit'] ) ) {
 
 	<div>
 		<label for="username">Username <strong>*</strong></label>
-		<input type="text" name="username" value="<?php echo ( !empty($_POST)) ? $username : ''; ?>" required>
+		<input type="text" name="username" value="<?php echo ! empty( $_POST ) ? $username : ''; ?>" required>
 	</div>
 
 	<div>
 		<label for="username">Password <strong>*</strong></label>
-		<input type="text" name="password" value="<?php echo ( !empty($_POST)) ?  $password : ''; ?>" required>
-	</div>	
+		<input type="text" name="password" value="<?php echo ! empty( $_POST ) ? $password : ''; ?>" required>
+	</div>
 
 	<div>
 		<label for="email">Email <strong>*</strong></label>
-		<input type="text" name="email" value="<?php echo ( !empty($_POST)) ?  $email : ''; ?>" required>
+		<input type="text" name="email" value="<?php echo ! empty( $_POST ) ? $email : ''; ?>" required>
 	</div>
 
 	<div>
 		<label for="website">Website</label>
-		<input type="text" name="website" value="<?php echo ( !empty($_POST)) ?  $website : ''; ?>">
+		<input type="text" name="website" value="<?php echo ! empty( $_POST ) ? $website : ''; ?>">
 	</div>
 
 	<div>
 		<label for="firstname">First Name</label>
-		<input type="text" name="first_name" value="<?php echo ( !empty($_POST)) ?  $first_name : ''; ?>" required>
+		<input type="text" name="first_name" value="<?php echo ! empty( $_POST ) ? $first_name : ''; ?>" required>
 	</div>
 
 	<div>
 		<label for="lastname">Last Name</label>
-		<input type="text" name="last_name" value="<?php echo ( !empty($_POST)) ?  $last_name : ''; ?>" required>
+		<input type="text" name="last_name" value="<?php echo ! empty( $_POST ) ? $last_name : ''; ?>" required>
 	</div>
 
 	<div>
 		<label for="nickname">Nickname</label>
-		<input type="text" name="nickname" value="<?php echo ( !empty($_POST)) ?  $nick_name : ''; ?>">
+		<input type="text" name="nickname" value="<?php echo ! empty( $_POST ) ? $nick_name : ''; ?>">
 	</div>
 
 	<div>
 		<label for="bio">About / Bio</label>
-		<textarea name="bio"><?php echo ( !empty($_POST)) ?  $bio : ''; ?></textarea>
+		<textarea name="bio"><?php echo ! empty( $_POST ) ? $bio : ''; ?></textarea>
 	</div>
 
 	<input type="submit" name="submit" value="Register"/>

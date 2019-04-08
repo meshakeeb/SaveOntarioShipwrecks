@@ -72,6 +72,30 @@
 							</a>
 						</div>
 
+						<?php if ( 1 == get_user_meta( $current_user->ID, 'parent_id', true ) ) : ?>
+
+						<div class="col-md-6">
+							<a href="<?php bloginfo( 'url' ); ?>/dashboard/manage-membership/family-plan//" class="item">
+								<div class="content">
+									<h4>Add Family Member</h4>
+									<p>Add new family member.</p>
+									<span class="rmore">Go <i class="fa fa-arrow-right"></i></span>
+								</div>
+							</a>
+						</div>
+
+						<div class="col-md-6">
+							<a href="<?php bloginfo( 'url' ); ?>/dashboard/manage-membership/family-member-list/" class="item">
+								<div class="content">
+									<h4>Family Member List</h4>
+									<p>View list of family members.</p>
+									<span class="rmore">Go <i class="fa fa-arrow-right"></i></span>
+								</div>
+							</a>
+						</div>
+
+						<?php endif; ?>
+
 						<div class="col-sm-12">
 							<a href="payment-history" class="item">
 								<div class="content">

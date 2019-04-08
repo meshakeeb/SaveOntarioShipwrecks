@@ -3,17 +3,20 @@
  * Family edit member shortcode.
  */
 
-if( !isset($_GET['member_id'])) {
+if ( 1 != get_user_meta( get_current_user_id(), 'parent_id', true ) ) {
+	return;
+}
+
+if ( ! isset( $_GET['member_id'] ) ) {
 	echo '<h3>ERROR: Invalid Member ID.</h3>';
 	return;
 }
 
-if ( isset($_POST['submit'] ) ) {
+if ( isset( $_POST['submit'] ) ) {
 	$reg_errors = new WP_Error;
 
 	// Sanitize user form input.
 	$username   = sanitize_user( $_POST['username'] );
-	//$password   = esc_attr( $_POST['password'] );
 	$email      = sanitize_email( $_POST['email'] );
 	$website    = esc_url( $_POST['website'] );
 	$first_name = sanitize_text_field( $_POST['fname'] );
@@ -23,7 +26,7 @@ if ( isset($_POST['submit'] ) ) {
 
 
 	// Validation.
-	if ( empty( $username )  || empty( $email ) ) {
+	if ( empty( $username ) || empty( $email ) ) {
 		$reg_errors->add( 'username_email', 'Required form field is missing' );
 	}
 
@@ -48,7 +51,7 @@ if ( isset($_POST['submit'] ) ) {
 			'first_name'  => $first_name,
 			'last_name'   => $last_name,
 			'nickname'    => $nickname,
-			'description' => $bio
+			'description' => $bio,
 		);
 
 		$user = wp_update_user( $userdata1 );
@@ -98,7 +101,7 @@ $description  = get_user_meta( $_GET['member_id'], 'description', true );
 
 	<div>
 		<label for="firstname">First Name</label>
-		<input type="text" name="fname" value="<?php echo $first_name ; ?>" required>
+		<input type="text" name="fname" value="<?php echo $first_name; ?>" required>
 	</div>
 
 	<div>

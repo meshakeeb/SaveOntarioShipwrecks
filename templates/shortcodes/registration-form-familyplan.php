@@ -99,7 +99,7 @@ if ( isset( $_POST['submit'] ) ) {
 		wp_mail( $email, $title, wpautop( $content ), $headers );
 		echo 'Family Member  Added.';
 	} else {
-		echo $reg_errors->get_error_messages();
+		echo join( (array) $reg_errors->get_error_messages(), '<br>' );
 	}
 }
 ?>

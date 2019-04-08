@@ -194,46 +194,18 @@ if($get_posts->have_posts()) : while($get_posts->have_posts()) : $get_posts->the
 <?php endif; ?>
 
 				<div class="col-sm-5">
-						<?php 
-							$chapter   = get_the_ID();
-							$officers = BoltMediaFront::get_chapter_officers($chapter);
 
-							//print_r($officers);
-						?>	
+					<?php get_template_part( 'templates/chapter', 'officers' ); ?>
 
-					<?php if ($officers != null) : ?>
-						<?php foreach ($officers as $officer) : ?>
-							<div class="get-involved">
-								<ul>
-									<li class="col-sm-12">
-										<div class="item">
-										<?php 
-											echo wp_get_attachment_image ( 
-												get_the_author_meta('bolt_profilePic', $officer->data->ID ),
-												'thumbnail' 
-											); 
-										?>												
-										<h4><?php echo get_user_meta( $officer->data->ID, 'billing_first_name', true) .' '. get_user_meta( $officer->data->ID, 'billing_last_name', true); ?></h4>
-										<span>
-											<?php echo $officer->data->post_info->post_title; ?><br><?php echo $officer->data->user_email; ?>						
-										</span>
-										</div>
-									</li>
-								</ul>
-							</div>
-						<?php endforeach; ?>	
-					<?php endif; ?>
-																	
-
-						<h3 class="heading">Quick Contact</h3>
-						<?php echo do_shortcode('[contact-form-7 id="4" title="Contact"]'); ?>
+					<h3 class="heading">Quick Contact</h3>
+					<?php echo do_shortcode( '[contact-form-7 id="4" title="Contact"]' ); ?>
 
 				</div>
 
-				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 
 <?php endif; ?>

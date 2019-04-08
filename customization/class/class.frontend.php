@@ -894,33 +894,32 @@ class BoltMediaFront {
 	}
 
 
-	public static function get_chapter_officers($chapter)
-	{
-		$args = array(
-			'meta_query' => array(
-				array(
-					'key'    => 'committee',
-					'value'  => $chapter
+	public static function get_chapter_officers( $chapter ) {
+		$posts = get_posts(
+			array(
+				'meta_query'     => array(
+					array(
+						'key'   => 'committee',
+						'value' => $chapter,
+					),
 				),
-			),
-			'post_type'      => 'memberroles',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'orderby'        => 'menu_order',
-			'order'          => 'ASC'
+				'post_type'      => 'memberroles',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'orderby'        => 'menu_order',
+				'order'          => 'ASC',
+			)
 		);
-		$post = get_posts($args);
 
-		if (!empty($post)) {
-			$officers = array();
-			foreach($post as $p){
-				$data = get_userdata (get_post_meta($p->ID, 'member', true) );
-				$data->post_info = $p;
-				//print_r($data); exit;
-				array_push($officers, $data);
-			}
-		} else {
-			$officers = null;
+		if ( empty( $posts ) ) {
+			return null;
+		}
+
+		$officers = array();
+		foreach ( $posts as $post ) {
+			$data            = get_userdata( get_post_meta( $post->ID, 'member', true ) );
+			$data->post_info = $post;
+			array_push( $officers, $data );
 		}
 
 		return $officers;

@@ -10,6 +10,8 @@
 
 namespace Ontario;
 
+use Ontario\Traits\Hooker;
+
 defined( 'ABSPATH' ) || exit;
 
 /**

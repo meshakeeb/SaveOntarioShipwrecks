@@ -2,28 +2,18 @@
 /*
  * This file contains front end matters
  */
-add_shortcode('dashboard', [BoltMediaFront::class, 'dashboard_shortcode']);
+
+add_shortcode( 'dashboard', [ BoltMediaFront::class, 'dashboard_shortcode' ] );
 
 class BoltMediaFront {
 
-	public function __construct()
-	{
-		//make $wpdb accessible to all functions/methods
-		//global $wpdb;
-		//$this->db = $wpdb;
-		//set plugin directory path
-		//$this->plugin_path = dirname(__DIR__);
-
-	}
-
-	/***********************
+	/*
 	 * REDIRECT CHAPTER EDITOR/MEMBER TO CUSTOM PAGES
 	 */
-	function login_redirect( $url, $request, $user )
-	{
-		if( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
-			if( $user->has_cap( 'bolt_chapter_editor') || $user->has_cap( 'bolt_chapter_member') ) {
-				$url = home_url('/dashboard/');
+	function login_redirect( $url, $request, $user ) {
+		if ( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
+			if ( $user->has_cap( 'bolt_chapter_editor' ) || $user->has_cap( 'bolt_chapter_member' ) ) {
+				$url = home_url( '/dashboard/' );
 			}
 		}
 		return $url;
@@ -31,79 +21,82 @@ class BoltMediaFront {
 
 
 
-	/***********************
-	 REDIRECT on LOGOUT
-	 ************************/
-	function logout_redirect()
-	{
-	  wp_redirect(  home_url() );
-	  exit();
+	/*
+	 * REDIRECT on LOGOUT
+	 **/
+	function logout_redirect() {
+		wp_redirect( home_url() );
+		exit;
 	}
 
-	/***********************
-	FORCE TO ALWAYS CHOOSE FULL SIZE IN IMAGE UPLOADER
-	************************/
-	public static function default_image_size()
-	{
+	/*
+	 * FORCE TO ALWAYS CHOOSE FULL SIZE IN IMAGE UPLOADER
+	 **/
+	public static function default_image_size() {
 		return 'full';
 	}
 
-	/***********************
-	SHORTCODES
-	************************/
-	public static function dashboard_shortcode( $atts )
-	{
-		if( !is_user_logged_in() ) {
-		  echo 'You need to be logged in to access this page';
-		  return;
+	/**
+	 * SHORTCODES
+	 */
+	public static function dashboard_shortcode( $atts ) {
+		if ( ! is_user_logged_in() ) {
+			echo 'You need to be logged in to access this page';
+			return;
 		}
 
-		if ( ! is_array($atts) ) return;
+		if ( ! is_array( $atts ) ) {
+			return;
+		}
 		$field = $atts[0];
 
 		$bolt_user = wp_get_current_user();
 
-		//echo '<pre>'; print_r($bolt_user); echo '</pre>';
+		if ( ! $bolt_user->data->ID ) {
+			return 'Invalid User ID.';
+		}
 
-		if ( ! $bolt_user->data->ID ) return 'Invalid User ID.';
-		//if ( @$bolt_user->data->chapter === null) return 'You are not a member of any Chapter';
+		$bolt_user->data->first_name       = get_user_meta( $bolt_user->ID, 'billing_first_name', true );
+		$bolt_user->data->last_name        = get_user_meta( $bolt_user->ID, 'billing_last_name', true );
+		$bolt_user->data->chapter          = get_user_meta( $bolt_user->ID, 'chapter', true );
+		$bolt_user->data->facebook         = get_user_meta( $bolt_user->ID, 'facebook', true );
+		$bolt_user->data->twitter          = get_user_meta( $bolt_user->ID, 'twitter', true );
+		$bolt_user->data->googleplus       = get_user_meta( $bolt_user->ID, 'googleplus', true );
+		$bolt_user->data->_profile_picture = get_user_meta( $bolt_user->ID, '_profile_picture', true );
+		$bolt_user->data->_mycode          = get_user_meta( $bolt_user->ID, '_mycode', true );
 
-		$bolt_user->data->first_name = get_user_meta($bolt_user->ID,'billing_first_name',true);
-		$bolt_user->data->last_name = get_user_meta($bolt_user->ID,'billing_last_name',true);
-
-		$bolt_user->data->chapter = get_user_meta($bolt_user->ID,'chapter',true);
-		$bolt_user->data->facebook = get_user_meta($bolt_user->ID,'facebook',true);
-		$bolt_user->data->twitter = get_user_meta($bolt_user->ID,'twitter',true);
-		$bolt_user->data->googleplus = get_user_meta($bolt_user->ID,'googleplus',true);
-		$bolt_user->data->_profile_picture = get_user_meta($bolt_user->ID,'_profile_picture',true);
-		$bolt_user->data->_mycode = get_user_meta($bolt_user->ID,'_mycode',true);
-
-		return call_user_func("BoltMediaFront::get_dashboard_$field", $bolt_user);
-
+		return call_user_func( "BoltMediaFront::get_dashboard_$field", $bolt_user );
 	}
 
-	public static function get_dashboard_usergallery($user_info)
-	{
-		remove_action('save_post', 'add_buoysite_fields');
-		remove_action('save_post', 'add_buoystatus_fields');
-		remove_action('save_post', 'add_chapter_fields');
-		remove_action('save_post', 'add_diverguide_fields');
-		remove_action('save_post', 'add_gallery_fields');
-		remove_action('save_post', 'add_newsletter_fields');
-		remove_action('save_post', 'add_memberrole_fields');
-		require ( get_theme_file_path().'/customization/views/dashboard-user-gallery.php');
+	public static function get_dashboard_usergallery( $user_info ) {
+		remove_action( 'save_post', 'add_buoysite_fields' );
+		remove_action( 'save_post', 'add_buoystatus_fields' );
+		remove_action( 'save_post', 'add_chapter_fields' );
+		remove_action( 'save_post', 'add_diverguide_fields' );
+		remove_action( 'save_post', 'add_gallery_fields' );
+		remove_action( 'save_post', 'add_newsletter_fields' );
+		remove_action( 'save_post', 'add_memberrole_fields' );
+		require get_theme_file_path() . '/customization/views/dashboard-user-gallery.php';
 	}
 
 
-	public static function get_dashboard_moderatePhotos($user_info)
-	{
-		//print_r($user_info); exit;
-		if( in_array("provincial_membership", $user_info->roles) || in_array("administrator", $user_info->roles) ){
-			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-			$photos = BoltMediaFront::getGalleries( array('posts_per_page' => 10, 'post_status' => 'any', 'paged' => $paged ) );
-			require ( get_theme_file_path().'/customization/views/dashboard-moderate-photos.php');
+	public static function get_dashboard_moderatePhotos( $user_info ) {
+		if (
+			$user_info->has_cap( 'moderate_upload_photos' ) ||
+			in_array( 'provincial_membership', $user_info->roles ) ||
+			in_array( 'administrator', $user_info->roles )
+		) {
+			$paged  = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+			$photos = BoltMediaFront::getGalleries(
+				array(
+					'posts_per_page' => 10,
+					'post_status'    => 'any',
+					'paged'          => $paged,
+				)
+			);
+			require get_theme_file_path() . '/customization/views/dashboard-moderate-photos.php';
 		} else {
-			return "ERROR: Photo Moderation is for Provincial and Administrator only.";
+			return 'ERROR: Photo Moderation is for Provincial and Administrator only.';
 		}
 	}
 
@@ -114,35 +107,32 @@ class BoltMediaFront {
 	 *
 	 * @return null
 	 */
-	public static function get_dashboard_email_templates($user_info)
-	{
+	public static function get_dashboard_email_templates( $user_info ) {
 
 		if (
 			$user_info->has_cap( 'edit_email_templates' ) ||
-			in_array( 'provincial_membership', $user_info->roles) ||
+			in_array( 'provincial_membership', $user_info->roles ) ||
 			in_array( 'administrator', $user_info->roles )
 		) {
-
-			if (@$_POST['action'] === "email_template") {
-				BoltMediaFront::saveMailTemplate($_POST);
+			if ( isset( $_POST['action'] ) && 'email_template' === $_POST['action'] ) {
+				BoltMediaFront::saveMailTemplate( $_POST );
 			}
 
-			$newmember = get_option('email_newmember');
-			$family = get_option('email_family');
-			$newpost = get_option('email_newpost');
-			$newbuoy =  get_option('email_newbuoy');
-			$badges = get_option('email_badges');
-			$renewal = get_option('email_renewal');
-			$reminder = get_option('email_reminder');
-			$news = get_option('email_news');
-			$permission = get_option('email_permission');
-			$pms =  get_option('pms_settings');
-
+			$newmember  = get_option( 'email_newmember' );
+			$family     = get_option( 'email_family' );
+			$newpost    = get_option( 'email_newpost' );
+			$newbuoy    = get_option( 'email_newbuoy' );
+			$badges     = get_option( 'email_badges' );
+			$renewal    = get_option( 'email_renewal' );
+			$reminder   = get_option( 'email_reminder' );
+			$news       = get_option( 'email_news' );
+			$permission = get_option( 'email_permission' );
+			$pms        = get_option( 'pms_settings' );
 		} else {
-			return "ERROR: Email template editing is for Provincial and Administrator only.";
+			return 'ERROR: Email template editing is for Provincial and Administrator only.';
 		}
 
-		include get_theme_file_path().'/customization/views/dashboard-email_templates.php';
+		include get_theme_file_path() . '/customization/views/dashboard-email_templates.php';
 	}
 
 
@@ -153,100 +143,98 @@ class BoltMediaFront {
 	 *
 	 * @return null
 	 */
-	public static function saveMailTemplate($data)
-	{
+	public static function saveMailTemplate( $data ) {
 
-		$pms =  get_option('pms_emails_settings');
-
+		$pms     = get_option( 'pms_emails_settings' );
 		$pms_new = array();
+
 		foreach ( $data['template'] as $k => $v ) {
-			switch ($k) {
-			case "pms_activate":
-				$pms_new['activate_sub_subject'] = $_POST['template'][$k]['title'];
-				$pms_new['activate_sub'] = $data[$k];
-				break;
-			case "pms_cancel":
-				$pms_new['cancel_sub_subject'] = $_POST['template'][$k]['title'];
-				$pms_new['cancel_sub'] = $data[$k];
-				break;
-			case "pms_expired":
-				$pms_new['expired_sub_subject'] = $_REQUEST['template'][$k]['title'];
-				$pms_new['expired_sub'] = $data[$k];
-				break;
-			case "pms_register":
-				$pms_new['register_sub_subject'] = $_POST['template'][$k]['title'];
-				$pms_new['register_sub'] = $data[$k];
-				break;
-			default:
-				$option = array(
-					'title' => $_POST['template'][$k]['title'],
-					'content' => $data[$k]
-				);
-				update_option('email_'.$k, $option);
+			switch ( $k ) {
+				case 'pms_activate':
+					$pms_new['activate_sub']         = $data[ $k ];
+					$pms_new['activate_sub_subject'] = $_POST['template'][ $k ]['title'];
+					break;
+				case 'pms_cancel':
+					$pms_new['cancel_sub']         = $data[ $k ];
+					$pms_new['cancel_sub_subject'] = $_POST['template'][ $k ]['title'];
+					break;
+				case 'pms_expired':
+					$pms_new['expired_sub']         = $data[ $k ];
+					$pms_new['expired_sub_subject'] = $_REQUEST['template'][ $k ]['title'];
+					break;
+				case 'pms_register':
+					$pms_new['register_sub']         = $data[ $k ];
+					$pms_new['register_sub_subject'] = $_POST['template'][ $k ]['title'];
+					break;
+				default:
+					$option = array(
+						'content' => $data[ $k ],
+						'title'   => $_POST['template'][ $k ]['title'],
+					);
+					update_option( 'email_' . $k, $option );
 			}
 		}
-		$pms_final = array_merge($pms, $pms_new);
 
-		wp_cache_delete('alloptions', 'options');
-		update_option('pms_emails_settings', $pms_final);
+		wp_cache_delete( 'alloptions', 'options' );
+		update_option( 'pms_emails_settings', array_merge( $pms, $pms_new ) );
 	}
 
 
-	public static function get_dashboard_profile($user_info)
-	{
-		wp_enqueue_style('thickbox');
-		wp_enqueue_script('media-upload');
-		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script('thickbox');
-		$profilePic = get_the_author_meta('bolt_profilePic', $user_info->ID);
+	public static function get_dashboard_profile( $user_info ) {
+		global $wpdb;
+
+		wp_enqueue_style( 'thickbox' );
+		wp_enqueue_script( 'media-upload' );
+		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'thickbox' );
+		$profilePic = get_the_author_meta( 'bolt_profilePic', $user_info->ID );
 		add_filter( 'pre_option_image_default_size', BoltMediaFront::default_image_size() );
 
-
-		global $wpdb;
-		$date =  $wpdb->get_row("SELECT `expiration_date` FROM `{$wpdb->prefix}pms_member_subscriptions` WHERE `user_id`= $user_info->ID", OBJECT);
-		$expiration = (count($date) > 0 ) ? date('F j, Y', strtotime($date->expiration_date ) ) : "N/A";
+		$date       = $wpdb->get_row( "SELECT `expiration_date` FROM `{$wpdb->prefix}pms_member_subscriptions` WHERE `user_id`= $user_info->ID", OBJECT );
+		$expiration = count( $date ) > 0 ? date( 'F j, Y', strtotime( $date->expiration_date ) ) : 'N/A';
 
 		$card_args = array(
-			'ID'    => $user_info->ID,
-			'fname' => $user_info->first_name,
-			'lname' => $user_info->last_name,
+			'ID'      => $user_info->ID,
+			'fname'   => $user_info->first_name,
+			'lname'   => $user_info->last_name,
 			'chapter' => get_the_title( $user_info->chapter ),
-			'expiry' => $expiration,
+			'expiry'  => $expiration,
 		);
-		$badge = BoltImage::PDFBadge($card_args);
-		require ( get_theme_file_path().'/customization/views//dashboard-profile.php');
+
+		$badge = BoltImage::PDFBadge( $card_args );
+		require get_theme_file_path() . '/customization/views//dashboard-profile.php';
 	}
 
-	public static function get_dashboard_buoystatus($user_info)
-	{
-		if( in_array("administrator", $user_info->roles) ) {
-			require ( get_theme_file_path().'/customization/views/dashboard-buoystatus.php');
+	public static function get_dashboard_buoystatus( $user_info ) {
+		if ( in_array( 'administrator', $user_info->roles ) ) {
+			require get_theme_file_path() . '/customization/views/dashboard-buoystatus.php';
 		} else {
 			echo '<h3>You are not allowed to add buoy status.</h3>';
 		}
 	}
 
-	public static function get_dashboard_members($user_info)
-	{
+	public static function get_dashboard_members( $user_info ) {
 
-		if( in_array("provincial_membership", $user_info->roles) || in_array("administrator", $user_info->roles) ){
+		if ( in_array( 'provincial_membership', $user_info->roles ) || in_array( 'administrator', $user_info->roles ) ) {
 			$chapter = @$_GET['chapter'];
 		} else {
 			$chapter = $user_info->chapter;
 		}
 
-		$args = array(
-			'meta_key'     => 'chapter',
-			'meta_value'   => $chapter,
-			'role__in'     => array('bolt_chapter_editor', 'bolt_chapter_member'),
-			'orderby'      => 'name',
-			'order'        => 'ASC',
-			'count_total'  => false,
-			'fields'       => 'all',
-			'exclude'      => array($user_info->ID),
-		 );
-		$users = get_users( $args );
-		require ( get_theme_file_path().'/customization/views//dashboard-members.php');
+		$users = get_users(
+			array(
+				'meta_key'    => 'chapter',
+				'meta_value'  => $chapter,
+				'role__in'    => array( 'bolt_chapter_editor', 'bolt_chapter_member' ),
+				'orderby'     => 'name',
+				'order'       => 'ASC',
+				'count_total' => false,
+				'fields'      => 'all',
+				'exclude'     => array( $user_info->ID ),
+			)
+		);
+
+		require get_theme_file_path() . '/customization/views//dashboard-members.php';
 	}
 
 
@@ -257,39 +245,37 @@ class BoltMediaFront {
 	 *
 	 * @return string message
 	 */
-	public static function get_dashboard_event($user_info)
-	{
+	public static function get_dashboard_event( $user_info ) {
 
-		if ($user_info->has_cap('publish_tribe_events')
-			|| in_array("provincial_membership", $user_info->roles)
-			|| in_array("administrator", $user_info->roles)
+		if (
+			$user_info->has_cap( 'publish_tribe_events' ) ||
+			in_array( 'provincial_membership', $user_info->roles ) ||
+			in_array( 'administrator', $user_info->roles )
 		) {
 
-			if (@$_POST['action'] === "add_event") {
-				//BoltMediaFront::addEvent($_POST);
-			} else if (@$_POST['action'] === "edit_event" ) {
-				BoltMediaFront::EditEvent($_POST);
+			if ( isset( $_POST['action'] ) && 'edit_event' === $_POST['action'] ) {
+				BoltMediaFront::EditEvent( $_POST );
 			}
 
 			$category = get_term_by(
 				'name',
-				get_the_title($user_info->chapter),
-				"tribe_events_cat"
+				get_the_title( $user_info->chapter ),
+				'tribe_events_cat'
 			);
 
-			if (!$category) {
-				$message = null;
+			if ( ! $category ) {
+				$message  = null;
 				$message .= '<div class="alert alert-warning">';
 				$message .= 'Cannot Post Event. No Event category found for ';
-				$message .= get_the_title($user_info->chapter);
+				$message .= get_the_title( $user_info->chapter );
 				$message .= '</div>';
 				return $message;
 			}
 
-			include get_theme_file_path().'/customization/views/dashboard-event.php';
+			include get_theme_file_path() . '/customization/views/dashboard-event.php';
 
 		} else {
-			return "<h3>You are not allowed to add an Event</h3>";
+			return '<h3>You are not allowed to add an Event</h3>';
 		}
 	}
 
@@ -364,7 +350,7 @@ class BoltMediaFront {
 				exit('The form is not valid');
 		}
 
-		if( $data['post_title'] === "" || $data['userID'] === "" || $data['post_category'] === "") {
+		if ( $data['post_title'] === "" || $data['userID'] === "" || $data['post_category'] === "") {
 
 			echo '<div class="alert alert-danger">ERROR: Title or Chapter is Missing.</div>';
 
@@ -385,7 +371,7 @@ class BoltMediaFront {
 
 			$insert = wp_update_post($args);
 
-			if($insert != 0){
+			if ($insert != 0){
 				flush_rewrite_rules();
 				wp_set_object_terms( $insert, $_POST['post_category'], 'tribe_events_cat' );
 				echo '<div class="alert alert-success">Event Added. <a href="'.get_permalink($insert).'">View<a></div>';
@@ -397,10 +383,10 @@ class BoltMediaFront {
 	}
 
 
-	public static function get_dashboard_news($user_info)
+	public static function get_dashboard_news( $user_info )
 	{
 
-		if( !$user_info->has_cap('publish_chapters') ) return "<h3>You are not allowed to add news.</h3>";
+		if ( !$user_info->has_cap('publish_chapters') ) return "<h3>You are not allowed to add news.</h3>";
 		//remove_action('media_buttons', 'media_buttons');
 
 		wp_enqueue_style('thickbox');
@@ -408,13 +394,13 @@ class BoltMediaFront {
 		wp_enqueue_script('thickbox');
 		add_filter( 'pre_option_image_default_size', array('BoltMediaFront', 'default_image_size') );
 
-		if( @$_POST['action'] === "add_news") {
+		if ( @$_POST['action'] === "add_news") {
 			BoltMediaFront::AddNews($_POST);
 		}
 
 		$category = get_term_by('name', get_the_title($user_info->chapter), "category");
-			if(!$category) return '<div class="alert alert-warning">Cannot Post Event. No Event category found for '.get_the_title($user_info->chapter).'</div>';
-		require ( get_theme_file_path().'/customization/views//dashboard-news.php');
+			if (!$category) return '<div class="alert alert-warning">Cannot Post Event. No Event category found for '.get_the_title($user_info->chapter).'</div>';
+		require get_theme_file_path() . '/customization/views//dashboard-news.php';
 	}
 
 	public static function AddNews($data)
@@ -426,7 +412,7 @@ class BoltMediaFront {
 				exit('The form is not valid');
 		}
 
-		if( $data['post_title'] === "" || $data['userID'] === "" || $data['post_category'] === "" || $data['content_type'] === "" ) {
+		if ( $data['post_title'] === "" || $data['userID'] === "" || $data['post_category'] === "" || $data['content_type'] === "" ) {
 
 			echo '<div class="alert alert-danger">ERROR: Title, Content Type or Chapter is Missing.</div>';
 
@@ -449,13 +435,13 @@ class BoltMediaFront {
 
 			$insert = wp_insert_post($args);
 
-			if($insert != 0){
+			if ($insert != 0){
 				set_post_thumbnail( $insert, $data['j_photo'] );
 				flush_rewrite_rules();
 				wp_set_object_terms( $insert, array($categories), 'category' );
 
 				$subfields = array();
-				if( $_POST['j_attachment'] && count($_POST['j_attachment']) > 0 ){
+				if ( $_POST['j_attachment'] && count($_POST['j_attachment']) > 0 ){
 					foreach( $_POST['j_attachment'] as $k => $v ){
 						array_push($subfields, array( 'multi_attachment' => $v) );
 					}
@@ -476,7 +462,7 @@ class BoltMediaFront {
 	}
 
 
-	public static function get_dashboard_newsletter($user_info)
+	public static function get_dashboard_newsletter( $user_info )
 	{
 
 		if (
@@ -489,11 +475,11 @@ class BoltMediaFront {
 
 			$category = get_the_title($user_info->chapter);
 
-			if( @$_POST['action'] === "send_to_members") {
+			if ( @$_POST['action'] === "send_to_members") {
 				BoltMediaFront::AddNewsletter($_POST);
 			}
 
-			require ( get_theme_file_path().'/customization/views//dashboard-newsletter.php');
+			require get_theme_file_path() . '/customization/views//dashboard-newsletter.php';
 
 		} else {
 			echo '<h3>You are not allowed to send newsletter</h3>'; return;
@@ -503,18 +489,18 @@ class BoltMediaFront {
 	}
 
 
-	public static function get_dashboard_management($user_info)
+	public static function get_dashboard_management( $user_info )
 	{
 
-		if( !$user_info->has_cap( 'manage_chapter_members') ) return "<h3>You are not allowed to manage members</h3>";
+		if ( !$user_info->has_cap( 'manage_chapter_members') ) return "<h3>You are not allowed to manage members</h3>";
 
-		if(  in_array("provincial_membership", $user_info->roles) || in_array("administrator", $user_info->roles) ){
+		if (  in_array("provincial_membership", $user_info->roles) || in_array("administrator", $user_info->roles) ){
 			$chapter = ( isset($_GET['chapter']) ) ? $_GET['chapter'] : $user_info->chapter;
 		} else {
 			$chapter = $user_info->chapter;
 		}
 
-		//print_r($user_info); exit;
+		//print_r( $user_info ); exit;
 
 		add_action('wp_footer',BoltMediaFront::TableSort(),10);
 
@@ -531,7 +517,7 @@ class BoltMediaFront {
 		 );
 		$users = get_users( $args );
 
-		require ( get_theme_file_path().'/customization/views//dashboard-manage.php');
+		require get_theme_file_path() . '/customization/views//dashboard-manage.php';
 	}
 
 	public static function AddNewsletter($data)
@@ -540,7 +526,7 @@ class BoltMediaFront {
 		if ( ! isset( $data['nonce_field'] )  || ! wp_verify_nonce( $data['nonce_field'], 'add_event_nonce') ) exit('The form is not valid');
 
 
-		if( $data['userID'] = "" || $data['post_category'] = ""){
+		if ( $data['userID'] = "" || $data['post_category'] = ""){
 			$response = '<div class="alert alert-danger">ERROR: Category or Author Missing.</div>';
 			return $response;
 		}
@@ -551,7 +537,7 @@ class BoltMediaFront {
 		$table = $wpdb->prefix."pms_member_subscriptions";
 
 
-		if( isset($_POST['non_subscribers']) && $_POST['non_subscribers'] === "1"){
+		if ( isset($_POST['non_subscribers']) && $_POST['non_subscribers'] === "1"){
 			$subscribers = array();
 		} else {
 			$subscribers =  array(
@@ -563,7 +549,7 @@ class BoltMediaFront {
 
 		$exclude = ( isset($_POST['send_me']) && $_POST['send_me'] === "1") ? null : array($_POST['userID']) ;
 
-		if( isset($_POST['include']) ) {
+		if ( isset($_POST['include']) ) {
 
 			$args = array(
 				'meta_query' => array(
@@ -610,7 +596,7 @@ class BoltMediaFront {
 		foreach ($users as $u) {
 			$subs = $wpdb->get_row("SELECT * FROM $table WHERE `user_id` = $u->ID");
 
-			if( !in_array( $subs->status, $_POST['members_status']) || get_the_title ( get_user_meta($u->ID,'chapter',true) ) === "" ) continue;
+			if ( !in_array( $subs->status, $_POST['members_status']) || get_the_title ( get_user_meta($u->ID,'chapter',true) ) === "" ) continue;
 
 			array_push($to, $u->user_email);
 		}
@@ -623,7 +609,7 @@ class BoltMediaFront {
 
 		 $mail = wp_mail( $to, $_POST['post_title'], $_POST['bolt_newsletter'], $headers );
 
-		 if($mail){
+		 if ($mail){
 			echo '<div class="alert alert-success">Newsletter Sent</div>';
 		 } else {
 			echo '<div class="alert alert-danger">ERROR: Mail Not Sent!</div>';
@@ -633,22 +619,22 @@ class BoltMediaFront {
 
 	}
 
-	public static function get_dashboard_chapters($user_info)
+	public static function get_dashboard_chapters( $user_info )
 	{
 
-		if( !$user_info->has_cap( 'edit_chapters') ) return "<p>You are not allowed to manage chapters</p>";
+		if ( !$user_info->has_cap( 'edit_chapters') ) return "<p>You are not allowed to manage chapters</p>";
 
-		require ( get_theme_file_path().'/customization/views//dashboard-chapters.php');
+		require get_theme_file_path() . '/customization/views//dashboard-chapters.php';
 	}
 
-	public static function get_dashboard_userinfo($user_info)
+	public static function get_dashboard_userinfo( $user_info )
 	{
 
-		if( !$user_info->has_cap( 'manage_chapter_members') ) return "<p>You are not allowed to edit member info</p>";
+		if ( !$user_info->has_cap( 'manage_chapter_members') ) return "<p>You are not allowed to edit member info</p>";
 
-		if( !isset($_GET['u']) ) return "<p>Invalid user ID</p>";
+		if ( !isset($_GET['u']) ) return "<p>Invalid user ID</p>";
 
-		if( in_array("provincial_membership", $user_info->roles) || in_array("administrator", $user_info->roles) ) {
+		if ( in_array("provincial_membership", $user_info->roles) || in_array("administrator", $user_info->roles) ) {
 			/*do something*/
 		} else {
 			if ( $user_info->chapter !== get_user_meta( $_GET['u'], 'chapter', true)  ) return "You can only edit members of your chapter";
@@ -658,7 +644,7 @@ class BoltMediaFront {
 
 		$userinfo_meta = get_user_meta($_GET['u']);
 
-		require ( get_theme_file_path().'/customization/views/dashboard-userinfo.php');
+		require get_theme_file_path() . '/customization/views/dashboard-userinfo.php';
 	}
 
 	/**
@@ -693,7 +679,7 @@ class BoltMediaFront {
 	public static function acf_filter_users( $args, $field, $post_id )
 	{
 		$chapter = get_user_meta( get_current_user_id() , 'chapter', true );
-		if( !current_user_can('administrator') ) :
+		if ( !current_user_can('administrator') ) :
 			$args['meta_key'] = 'chapter';
 			$args['meta_value'] = $chapter;
 		endif;
@@ -704,7 +690,7 @@ class BoltMediaFront {
 	public static function acf_filter_commitee( $args, $field, $post_id )
 	{
 		$chapter = get_user_meta( get_current_user_id() , 'chapter', true );
-		if( !current_user_can('administrator') ) :
+		if ( !current_user_can('administrator') ) :
 			$args['post__in'] = array($chapter);
 		endif;
 		return $args;
@@ -715,7 +701,7 @@ class BoltMediaFront {
 	function exclude_menu_items( $items, $menu, $args )
 	{
 
-		if($menu->slug === "account"){
+		if ($menu->slug === "account"){
 
 			$bolt_user = wp_get_current_user();
 			foreach ( $items as $key => $item ) {
@@ -840,7 +826,7 @@ class BoltMediaFront {
 		);
 		$post = get_posts($args);
 
-		if(!empty($post)) {
+		if (!empty($post)) {
 			$treasurer = get_userdata (get_post_meta($post[0]->ID, 'member', true) );
 		} else {
 			$treasurer = null;
@@ -870,7 +856,7 @@ class BoltMediaFront {
 		);
 		$post = get_posts($args);
 
-		if(!empty($post)) {
+		if (!empty($post)) {
 			$secretary = get_userdata (get_post_meta($post[0]->ID, 'member', true) );
 		} else {
 			$secretary = null;
@@ -898,7 +884,7 @@ class BoltMediaFront {
 		);
 		$post = get_posts($args);
 
-		if(!empty($post)) {
+		if (!empty($post)) {
 			$buoys = get_userdata (get_post_meta($post[0]->ID, 'member', true) );
 		} else {
 			$buoys = null;
@@ -925,7 +911,7 @@ class BoltMediaFront {
 		);
 		$post = get_posts($args);
 
-		if(!empty($post)) {
+		if (!empty($post)) {
 			$officers = array();
 			foreach($post as $p){
 				$data = get_userdata (get_post_meta($p->ID, 'member', true) );
@@ -962,7 +948,7 @@ class BoltMediaFront {
 		global $wpdb;
 		$user =  get_current_user_id();
 
-		if( $user < 1 ) return;
+		if ( $user < 1 ) return;
 
 		$query = "SELECT id FROM {$wpdb->prefix}pms_member_subscriptions WHERE user_id = ".get_current_user_id()."";
 		$subscription = $wpdb->get_results($query, ARRAY_A);

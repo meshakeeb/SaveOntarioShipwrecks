@@ -117,8 +117,10 @@ class BoltMediaFront {
 	public static function get_dashboard_email_templates($user_info)
 	{
 
-		if (in_array("provincial_membership", $user_info->roles)
-			|| in_array("administrator", $user_info->roles)
+		if (
+			$user_info->has_cap( 'edit_email_templates' ) ||
+			in_array( 'provincial_membership', $user_info->roles) ||
+			in_array( 'administrator', $user_info->roles )
 		) {
 
 			if (@$_POST['action'] === "email_template") {

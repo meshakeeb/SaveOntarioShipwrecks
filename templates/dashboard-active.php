@@ -218,6 +218,20 @@
 								</a>
 							</div>
 
+							<?php if ( $current_user->has_cap('edit_email_templates') ) { ?>
+
+							<div class="col-md-12">
+								<a href="<?php bloginfo('url'); ?>/dashboard/email-templates/" class="item">
+									<div class="content">
+										<h4>Edit Email Templates</h4>
+										<p>Edit the email templates sent to users.</p>
+										<span class="rmore">Go <i class="fa fa-arrow-right"></i></span>
+									</div>
+								</a>
+							</div>
+
+							<?php } ?>
+
 							<?php if ( $current_user->has_cap('publish_buoy_status') || $current_user->has_cap('activate_plugins') ) { ?>
 
 							<div class="col-md-6">

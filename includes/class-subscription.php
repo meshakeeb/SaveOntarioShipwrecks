@@ -42,7 +42,7 @@ class Subscription {
 		if (
 			true !== $update_result ||
 			'active' !== $status ||
-			1 !== absint( get_user_meta( $user_id, 'parent_id', true ) )
+			! self::is_family_parent( $user_id )
 		) {
 			return;
 		}

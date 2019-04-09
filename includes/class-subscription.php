@@ -67,4 +67,22 @@ class Subscription {
 
 		$this->action( 'pms_member_update_subscription', 'renew_family_members', 10, 6 );
 	}
+
+	public static function is_family_parent( $user_id = null ) {
+		if ( is_null( $user_id ) ) {
+			$user_id = get_current_user_id();
+		}
+
+		if ( metadata_exists( 'user', $user_id, 'parent_id' ) && get_user_meta( $user_id, 'parent_id', true ) ) {
+			return true;
+		}
+
+		$member_subscriptions = pms_get_member_subscriptions( [ 'user_id' => $user_id ] );
+		$subscription_plan    = pms_get_subscription_plan( $member_subscriptions[0]->subscription_plan_id );
+		if ( strpos( strtolower( $subscription_plan->name ), 'family' ) !== false ) {
+			return true;
+		}
+
+		return false;
+	}
 }

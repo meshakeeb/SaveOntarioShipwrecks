@@ -1,3 +1,8 @@
+<?php
+
+use Ontario\Subscription;
+
+?>
 <div class="page_header">
 	<div class="container">
 		<div class="row">
@@ -72,7 +77,7 @@
 							</a>
 						</div>
 
-						<?php if ( 1 == get_user_meta( $current_user->ID, 'parent_id', true ) ) : ?>
+						<?php if ( Subscription::is_family_parent( $current_user->ID ) ) : ?>
 
 						<div class="col-md-6">
 							<a href="<?php bloginfo( 'url' ); ?>/dashboard/manage-membership/family-plan//" class="item">

@@ -145,11 +145,18 @@ class BoltPDF extends FPDF {
 		$message_default .= '<p>Hello ' . $name . ',</p>';
 		$message_default .= '<p>Please see your Save Ontario Shipwrecks membership card attached to this email.</p>';
 
-		$message_default .= '<p>Or alternatively, you may visit <a href="' . $pdf . '">' . $pdf . '</a> to view and save your card.</p>';
+		$message_default .= '<p>Or alternatively, you may visit <a href="' . $pdf . '">this link</a> to view and save your card.</p>';
 		$message_default .= '<p>Thank You for Preserving Our Marine Heritage</p>';
 		$message_default .= '<p>Save Ontario Shipwrecks</p>';
 
 		$message = '' === $badges['content'] ? $message_default : str_replace( array( '{fname}', '{pdf}' ), array( $name, $pdf ), $badges['content'] );
+
+		// Add filter to enable html encoding
+		add_filter( 'wp_mail_content_type', array( 'PMS_Emails', 'pms_email_content_type' ) );
+
+		// Temporary change the from name and from email
+		add_filter( 'wp_mail_from_name', array( 'PMS_Emails', 'pms_email_website_name' ), 20, 1 );
+		add_filter( 'wp_mail_from', array( 'PMS_Emails', 'pms_email_website_email' ), 20, 1 );
 
 		wp_mail(
 			get_userdata( $order_id )->user_email,
@@ -158,5 +165,12 @@ class BoltPDF extends FPDF {
 			$headers,
 			$attach
 		);
+
+		// Reset html encoding
+		remove_filter( 'wp_mail_content_type', array( 'PMS_Emails', 'pms_email_content_type' ) );
+
+		// Reset the from name and email
+		remove_filter( 'wp_mail_from_name', array( 'PMS_Emails', 'pms_email_website_name' ), 20 );
+		remove_filter( 'wp_mail_from', array( 'PMS_Emails', 'pms_email_website_email' ), 20 );
 	}
 }

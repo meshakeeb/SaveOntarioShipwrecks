@@ -3,7 +3,7 @@
  * Family list shortcode.
  */
 
-if ( 1 != get_user_meta( get_current_user_id(), 'parent_id', true ) ) {
+if ( ! \Ontario\Subscription::is_family_parent() ) {
 	return;
 }
 $memberlist = get_users(

@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Ontario' => $baseDir . '/includes/class-ontario.php',
+    'Ontario\\Capabilities' => $baseDir . '/includes/class-capabilities.php',
     'Ontario\\Shortcodes' => $baseDir . '/includes/class-shortcodes.php',
     'Ontario\\Subscription' => $baseDir . '/includes/class-subscription.php',
     'Ontario\\Theme_Setup' => $baseDir . '/includes/class-theme-setup.php',

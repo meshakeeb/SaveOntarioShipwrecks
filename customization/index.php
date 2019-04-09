@@ -7,8 +7,6 @@
  * @category Null
  * @package  SOS_Customizations
  * @author   Japol <japol69@gmail.com>
- * @license  FREE 
- * @link     http://www.boltmedia.ca 
  * @
  */
 
@@ -21,19 +19,18 @@ require 'class/class.pms-override.php';
 require 'class/class.buoy.php';
 require 'assets/pms_purge_expired_users/index.php';
 
-$bolt = new BoltMedia;
+$bolt      = new BoltMedia;
 $boltFront = new BoltMediaFront;
-$boltAjax = new BoltMediaAjax;
+$boltAjax  = new BoltMediaAjax;
 $boltImage = new BoltImage;
-$boltPDF = new BoltPDF;
-$boltPMS = new BoltPMS;
-$boltPMS = new BoltPMS;
-$boltBuoy = new BoltMediaBuoy;
+$boltPDF   = new BoltPDF;
+$boltPMS   = new BoltPMS;
+$boltBuoy  = new BoltMediaBuoy;
 
 //GET/LOAD ALL FUNCTION FILES @ 'customization/includes' DIRECTORY
 $files = glob(get_template_directory().'/customization/includes/' . "*.php");
-foreach($files as $file): 
-    include $file; 
+foreach($files as $file):
+	include $file;
 endforeach;
 
 //generate post types
@@ -96,58 +93,58 @@ add_action('wp_ajax_nopriv_exportBuoy', array($boltAjax, 'deny'));
 //for edit profile
 add_filter('parse_query', array($bolt,'show_current_user_attachments'));
 
-//for upload photo 
+//for upload photo
 add_filter(
-    'ajax_query_attachments_args', 
-    array($bolt,'show_current_user_attachments_upload_photos'), 
-    10, 
-    1
+	'ajax_query_attachments_args',
+	array($bolt,'show_current_user_attachments_upload_photos'),
+	10,
+	1
 );
 
 // for /dashboard/create-role/ page (members)
 add_filter(
-    'acf/fields/user/query/key=field_5af0c052a99fc', 
-    array($boltFront,'acf_filter_users'), 
-    10, 
-    99
+	'acf/fields/user/query/key=field_5af0c052a99fc',
+	array($boltFront,'acf_filter_users'),
+	10,
+	99
 );
 
 // for /dashboard/create-role/ page (committee)
 add_filter(
-    'acf/fields/post_object/query/key=field_5af1eb7c94786', 
-    array($boltFront,'acf_filter_commitee'), 
-    10, 
-    3
+	'acf/fields/post_object/query/key=field_5af1eb7c94786',
+	array($boltFront,'acf_filter_commitee'),
+	10,
+	3
 );
 
-// for /dashboard/create-role/ page (committee) 
+// for /dashboard/create-role/ page (committee)
 add_filter(
-    'acf/fields/post_object/query/key=field_5b1aa10babab9', 
-    array($boltFront,'acf_filter_commitee'), 
-    10, 
-    3
+	'acf/fields/post_object/query/key=field_5b1aa10babab9',
+	array($boltFront,'acf_filter_commitee'),
+	10,
+	3
 );
 
 add_action(
-    'pms_member_subscription_inserted', 
-    array($boltPMS,'userPostMeta'), 
-    1, 
-    2
+	'pms_member_subscription_inserted',
+	array($boltPMS,'userPostMeta'),
+	1,
+	2
 );
 
 
 add_action(
-    'pms_member_subscription_inserted', 
-    array($boltPDF,'generatePDFArgs'), 
-    15, 
-    2
+	'pms_member_subscription_inserted',
+	array($boltPDF,'generatePDFArgs'),
+	15,
+	2
 );
 
 add_action(
-    'pms_member_subscription_update', 
-    array($boltPDF,'generatePDFArgs2'), 
-    15, 
-    2
+	'pms_member_subscription_update',
+	array($boltPDF,'generatePDFArgs2'),
+	15,
+	2
 );
 
 add_action('pdf_hook', array($boltPDF,'generatePDF'), 99, 2);
@@ -157,10 +154,10 @@ add_action('wp_enqueue_scripts', array($boltPMS,'cssOverride'), 100);
 add_action('pms_register_form_bottom', array($boltPMS,'registerFormAfter'), 1);
 
 add_action(
-    'pms_register_form_validation', 
-    array($boltPMS,'registerValidation'), 
-    10, 
-    1
+	'pms_register_form_validation',
+	array($boltPMS,'registerValidation'),
+	10,
+	1
 );
 
 //ACF user-gallery after submitting new gallery
@@ -178,12 +175,12 @@ add_filter('manage_users_custom_column', array($boltPMS, 'pmsTableRow'), 9999, 3
 */
 if (is_page('japol-test-69') ) {
 
-    global $wp_roles;
-    $wp_roles->add_cap('provincial_membership', 'send_newsletter');
-    $wp_roles->add_cap('administrator', 'send_newsletter');
+	global $wp_roles;
+	$wp_roles->add_cap('provincial_membership', 'send_newsletter');
+	$wp_roles->add_cap('administrator', 'send_newsletter');
 
-    add_action('init', array($boltPDF,'generatePDFArgs'), 99, 1);
-    add_action('pdf_hook', array($boltPDF,'generatePDF'), 10, 1);
+	add_action('init', array($boltPDF,'generatePDFArgs'), 99, 1);
+	add_action('pdf_hook', array($boltPDF,'generatePDF'), 10, 1);
 }
 
 
@@ -195,22 +192,22 @@ if (is_page('japol-test-69') ) {
  * @var    array $vars
  * @return array
  */
-function customQueryVarsFilter($vars) 
+function customQueryVarsFilter($vars)
 {
-    $vars[] .= 'edit';
-    return $vars;
+	$vars[] .= 'edit';
+	return $vars;
 }
 add_filter('query_vars', 'customQueryVarsFilter');
 
 
 add_action( 'init', function()
 {
-    remove_action( 'register_new_user',   'wp_send_new_user_notifications');
+	remove_action( 'register_new_user',   'wp_send_new_user_notifications');
 } );
 
 
 if ( ! function_exists( 'wp_new_user_notification' ) ) :
-    function wp_new_user_notification( $user_id, $deprecated = null, $notify = '' ) {
-        return;
-    }
+	function wp_new_user_notification( $user_id, $deprecated = null, $notify = '' ) {
+		return;
+	}
 endif;

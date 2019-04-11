@@ -85,4 +85,16 @@ class Subscription {
 
 		return false;
 	}
+
+	public static function is_family_member( $user_id = null ) {
+		if ( is_null( $user_id ) ) {
+			$user_id = get_current_user_id();
+		}
+
+		if ( ! metadata_exists( 'user', $user_id, 'family_plan_member' ) || '1' !== get_user_meta( $user_id, 'family_plan_member', true ) ) {
+			return false;
+		}
+
+		return true;
+	}
 }

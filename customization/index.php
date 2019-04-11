@@ -34,64 +34,57 @@ foreach($files as $file):
 endforeach;
 
 //generate post types
-add_action('init', 'Boltmedia\\Includes\\PostTypes\\GeneratePostTypes', 10);
-//post type taxonomies
-//add_action('init', 'Boltmedia\\Includes\\Taxonomies\\GenerateTaxonomy', 1 );
+add_action( 'init', 'Boltmedia\\Includes\\PostTypes\\GeneratePostTypes', 10 );
 
-add_filter('login_redirect', array($boltFront, 'login_redirect'), 10, 3);
-add_action('wp_logout', array($boltFront,'logout_redirect'));
+add_filter( 'wp_get_nav_menu_items', array( $boltFront,'exclude_menu_items' ), 99, 3 );
 
-add_filter('wp_get_nav_menu_items', array($boltFront,'exclude_menu_items'), 99, 3);
+add_action( 'user_new_form', array( $bolt, 'profile_fields' ) );
+add_action( 'show_user_profile', array( $bolt, 'profile_fields' ) );
+add_action( 'edit_user_profile', array( $bolt, 'profile_fields' ) );
 
-add_action('user_new_form', array($bolt, 'profile_fields'));
-add_action('show_user_profile', array($bolt, 'profile_fields'));
-add_action('edit_user_profile', array($bolt, 'profile_fields'));
+add_action( 'user_register', array( $bolt, 'save_profile_fields' ), 10, 1 );
 
-add_action('user_register', array($bolt, 'save_profile_fields'), 10, 1);
+add_action( 'personal_options_update', array( $bolt, 'save_profile_fields' ) );
+add_action( 'edit_user_profile_update', array( $bolt, 'save_profile_fields' ) );
 
-add_action('personal_options_update', array($bolt, 'save_profile_fields'));
-add_action('edit_user_profile_update', array($bolt, 'save_profile_fields'));
+add_action( 'publish_post', array( $bolt, 'new_post_notification' ) );
+add_action( 'save_post', array( $bolt, 'new_post_notification' ) );
 
-add_action('publish_post', array($bolt, 'new_post_notification'));
-add_action('save_post', array($bolt, 'new_post_notification'));
+add_action( 'after_setup_theme', array( $boltFront, 'admin_bar' ) );
 
+// AJAX.
+add_action( 'wp_ajax_edit_profile', array( $boltAjax, 'update_profile' ) );
+add_action( 'wp_ajax_nopriv_edit_profile', array( $boltAjax, 'deny' ) );
 
-add_action('after_setup_theme',  array($boltFront,'admin_bar'));
+add_action( 'wp_ajax_edit_member', array( $boltAjax, 'update_member' ) );
+add_action( 'wp_ajax_nopriv_edit_member', array( $boltAjax, 'deny' ) );
 
+add_action( 'wp_ajax_moderate_photos', array( $boltAjax, 'moderate_photos' ) );
+add_action( 'wp_ajax_nopriv_moderate_photos', array( $boltAjax, 'deny' ) );
 
-//AJAX
-add_action('wp_ajax_edit_profile', array($boltAjax, 'update_profile'));
-add_action('wp_ajax_nopriv_edit_profile', array($boltAjax, 'deny'));
+add_action( 'wp_ajax_add_event', array( $boltAjax, 'add_event' ) );
+add_action( 'wp_ajax_nopriv_add_event', array( $boltAjax, 'deny' ) );
 
-add_action('wp_ajax_edit_member', array($boltAjax, 'update_member'));
-add_action('wp_ajax_nopriv_edit_member', array($boltAjax, 'deny'));
+add_action( 'wp_ajax_remind_member', array( $boltAjax, 'remind_member' ) );
+add_action( 'wp_ajax_nopriv_remind_member', array( $boltAjax, 'deny' ) );
 
-add_action('wp_ajax_moderate_photos', array($boltAjax, 'moderate_photos'));
-add_action('wp_ajax_nopriv_moderate_photos', array($boltAjax, 'deny'));
+add_action( 'wp_ajax_newsletter_opt', array( $boltAjax, 'newsletter_opt' ) );
+add_action( 'wp_ajax_nopriv_newsletter_opt', array( $boltAjax, 'deny' ) );
 
-add_action('wp_ajax_add_event', array($boltAjax, 'add_event'));
-add_action('wp_ajax_nopriv_add_event', array($boltAjax, 'deny'));
+add_action( 'wp_ajax_billing_phone', array( $boltAjax, 'billing_phone' ) );
+add_action( 'wp_ajax_nopriv_billing_phone', array( $boltAjax, 'deny' ) );
 
-add_action('wp_ajax_remind_member', array($boltAjax, 'remind_member'));
-add_action('wp_ajax_nopriv_remind_member', array($boltAjax, 'deny'));
+add_action( 'wp_ajax_userinfo_edit', array( $boltAjax, 'userinfo_edit' ) );
+add_action( 'wp_ajax_nopriv_userinfo_edit', array( $boltAjax, 'deny' ) );
 
-add_action('wp_ajax_newsletter_opt', array($boltAjax, 'newsletter_opt'));
-add_action('wp_ajax_nopriv_newsletter_opt', array($boltAjax, 'deny'));
+add_action( 'wp_ajax_import_members', array( $boltAjax, 'import_members' ) );
+add_action( 'wp_ajax_nopriv_import_members', array( $boltAjax, 'deny' ) );
 
-add_action('wp_ajax_billing_phone', array($boltAjax, 'billing_phone'));
-add_action('wp_ajax_nopriv_billing_phone', array($boltAjax, 'deny'));
-
-add_action('wp_ajax_userinfo_edit', array($boltAjax, 'userinfo_edit'));
-add_action('wp_ajax_nopriv_userinfo_edit', array($boltAjax, 'deny'));
-
-add_action('wp_ajax_import_members', array($boltAjax, 'import_members'));
-add_action('wp_ajax_nopriv_import_members', array($boltAjax, 'deny'));
-
-add_action('wp_ajax_exportBuoy', array($boltBuoy, 'exportBuoy'));
-add_action('wp_ajax_nopriv_exportBuoy', array($boltAjax, 'deny'));
+add_action( 'wp_ajax_exportBuoy', array( $boltBuoy, 'exportBuoy' ) );
+add_action( 'wp_ajax_nopriv_exportBuoy', array( $boltAjax, 'deny' ) );
 
 //for edit profile
-add_filter('parse_query', array($bolt,'show_current_user_attachments'));
+add_filter( 'parse_query', array($bolt,'show_current_user_attachments' ) );
 
 //for upload photo
 add_filter(
@@ -164,8 +157,8 @@ add_action(
 add_action('acf/save_post', 'Boltmedia\\Includes\\ACF\\acfSavePost', 99);
 
 //wp-admin/users page to add new columns
-add_filter('manage_users_columns', array($boltPMS, 'pmsUserTable'), 9999, 1);
-add_filter('manage_users_custom_column', array($boltPMS, 'pmsTableRow'), 9999, 3);
+add_filter( 'manage_users_columns', array($boltPMS, 'pmsUserTable'), 9999, 1 );
+add_filter( 'manage_users_custom_column', array($boltPMS, 'pmsTableRow'), 9999, 3 );
 
 /*
 **DEBUG
@@ -197,7 +190,7 @@ function customQueryVarsFilter($vars)
 	$vars[] .= 'edit';
 	return $vars;
 }
-add_filter('query_vars', 'customQueryVarsFilter');
+add_filter( 'query_vars', 'customQueryVarsFilter' );
 
 
 add_action( 'init', function()

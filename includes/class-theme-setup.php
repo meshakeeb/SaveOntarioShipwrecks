@@ -51,6 +51,7 @@ class Theme_Setup {
 		$this->action( 'wp_ajax_load-filter', 'prefix_load_cat_posts' );
 
 		new Post_Types;
+		new Frontend;
 		new Emails;
 		new Shortcodes;
 		new Subscription;

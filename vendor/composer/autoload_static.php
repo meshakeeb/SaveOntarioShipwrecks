@@ -24,6 +24,7 @@ class ComposerStaticInit9cfcc2985893d6e5c1499993620aacf9
         'Ontario' => __DIR__ . '/../..' . '/includes/class-ontario.php',
         'Ontario\\Capabilities' => __DIR__ . '/../..' . '/includes/class-capabilities.php',
         'Ontario\\Emails' => __DIR__ . '/../..' . '/includes/class-emails.php',
+        'Ontario\\Frontend' => __DIR__ . '/../..' . '/includes/class-frontend.php',
         'Ontario\\Post_Types' => __DIR__ . '/../..' . '/includes/class-post-types.php',
         'Ontario\\Shortcodes' => __DIR__ . '/../..' . '/includes/class-shortcodes.php',
         'Ontario\\Subscription' => __DIR__ . '/../..' . '/includes/class-subscription.php',

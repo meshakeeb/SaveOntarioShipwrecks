@@ -8,28 +8,6 @@ add_shortcode( 'dashboard', [ BoltMediaFront::class, 'dashboard_shortcode' ] );
 class BoltMediaFront {
 
 	/*
-	 * REDIRECT CHAPTER EDITOR/MEMBER TO CUSTOM PAGES
-	 */
-	function login_redirect( $url, $request, $user ) {
-		if ( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
-			if ( $user->has_cap( 'bolt_chapter_editor' ) || $user->has_cap( 'bolt_chapter_member' ) ) {
-				$url = home_url( '/dashboard/' );
-			}
-		}
-		return $url;
-	}
-
-
-
-	/*
-	 * REDIRECT on LOGOUT
-	 **/
-	function logout_redirect() {
-		wp_redirect( home_url() );
-		exit;
-	}
-
-	/*
 	 * FORCE TO ALWAYS CHOOSE FULL SIZE IN IMAGE UPLOADER
 	 **/
 	public static function default_image_size() {
@@ -995,15 +973,4 @@ class BoltMediaFront {
 
 		return array_unique($member_all);
 	}
-
-	/**
-	 * Test comment
-	 *
-	 * @return some_data
-	 */
-	function testCase()
-	{
-		echo "test";
-	}
-
-}//end of class
+}

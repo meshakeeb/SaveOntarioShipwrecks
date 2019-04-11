@@ -33,9 +33,6 @@ foreach($files as $file):
 	include $file;
 endforeach;
 
-//generate post types
-add_action( 'init', 'Boltmedia\\Includes\\PostTypes\\GeneratePostTypes', 10 );
-
 add_filter( 'wp_get_nav_menu_items', array( $boltFront,'exclude_menu_items' ), 99, 3 );
 
 add_action( 'user_new_form', array( $bolt, 'profile_fields' ) );

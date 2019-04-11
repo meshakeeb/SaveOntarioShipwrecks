@@ -32,6 +32,7 @@ class Post_Types {
 		$this->action( 'init', 'gallery' );
 		$this->action( 'init', 'newsletter' );
 		$this->action( 'init', 'member_roles' );
+		$this->action( 'init', 'user_gallery' );
 	}
 
 	/**
@@ -314,5 +315,51 @@ class Post_Types {
 		];
 
 		register_post_type( 'memberroles', $args );
+	}
+
+	/**
+	 * Register user gallery post type.
+	 */
+	public function user_gallery() {
+		$labels = [
+			'name'                  => 'User Uploaded Galleries',
+			'singular_name'         => 'User Gallery',
+			'add_new_item'          => 'Add User Gallery',
+			'edit_item'             => 'Edit User Gallery',
+			'new_item'              => 'New User Gallery',
+			'view_item'             => 'View User Gallery',
+			'view_items'            => 'View User Gallery',
+			'search_items'          => 'Search User Gallery',
+			'not_found'             => 'No User Gallery found',
+			'not_found_in_trash'    => 'No User Gallery found in trash',
+			'all_items'             => 'All Galleries',
+			'archives'              => 'Our User Gallery Archive',
+			'attributes'            => 'User Gallery Attributes',
+			'insert_into_item'      => 'Insert in User Gallery',
+			'uploaded_to_this_item' => 'Uploaded to this User Gallery',
+			'featured_image'        => 'User Gallery Cover',
+			'set_featured_image'    => 'Set User Gallery Cover',
+			'remove_featured_image' => 'Remove User Gallery Cover',
+			'use_featured_image'    => 'Use as User Gallery Cover',
+			'menu_name'             => 'User Gallery',
+		];
+
+		$args = [
+			'label'               => 'User Gallery',
+			'labels'              => $labels,
+			'description'         => 'To create user galleries.',
+			'supports'            => [ 'title', 'author' ],
+			'public'              => true,
+			'menu_position'       => 10,
+			'menu_icon'           => 'dashicons-format-image',
+			'has_archive'         => true,
+			'exclude_from_search' => false,
+			'rewrite'             => [
+				'slug'       => 'uploaded-galleries',
+				'with_front' => false,
+			],
+		];
+
+		register_post_type( 'bolt_user_gallery', $args );
 	}
 }

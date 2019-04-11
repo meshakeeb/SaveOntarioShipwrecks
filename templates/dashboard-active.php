@@ -303,6 +303,8 @@ use Ontario\Subscription;
 
 						<?php } ?>
 
+						<?php get_template_part( 'templates/dashboard/document', 'nav' ); ?>
+
 						<?php if ( in_array( 'bolt_chapter_editor', (array) $current_user->roles ) ) { ?>
 
 						<h2>User Management</h2>
@@ -353,7 +355,9 @@ use Ontario\Subscription;
 						<?php } ?>
 
 					</div>
+
 				</div>
+
 			</div>
 
 			<?php } else { ?>

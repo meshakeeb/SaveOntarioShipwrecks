@@ -22,6 +22,7 @@ class ComposerStaticInit9cfcc2985893d6e5c1499993620aacf9
 
     public static $classMap = array (
         'Ontario' => __DIR__ . '/../..' . '/includes/class-ontario.php',
+        'Ontario\\ACF' => __DIR__ . '/../..' . '/includes/class-acf.php',
         'Ontario\\Capabilities' => __DIR__ . '/../..' . '/includes/class-capabilities.php',
         'Ontario\\Emails' => __DIR__ . '/../..' . '/includes/class-emails.php',
         'Ontario\\Frontend' => __DIR__ . '/../..' . '/includes/class-frontend.php',

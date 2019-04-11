@@ -50,6 +50,7 @@ class Theme_Setup {
 		$this->action( 'wp_ajax_nopriv_load-filter', 'prefix_load_cat_posts' );
 		$this->action( 'wp_ajax_load-filter', 'prefix_load_cat_posts' );
 
+		new ACF;
 		new Post_Types;
 		new Frontend;
 		new Emails;

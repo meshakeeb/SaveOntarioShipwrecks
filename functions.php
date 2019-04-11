@@ -36,8 +36,6 @@ $themeversion = '1.0';
  */
 get_template_part( 'includes/class-ontario' );
 
-require_once( get_template_directory() . '/functions/shortcodes.php' );
-
 require_once( get_template_directory() . '/admin/admin-functions.php' );
 require_once( get_template_directory() . '/admin/admin-interface.php' );
 require_once( get_template_directory() . '/admin/theme-settings.php' );

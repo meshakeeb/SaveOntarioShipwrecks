@@ -10,6 +10,7 @@ return array(
     'Ontario\\ACF' => $baseDir . '/includes/class-acf.php',
     'Ontario\\Capabilities' => $baseDir . '/includes/class-capabilities.php',
     'Ontario\\Emails' => $baseDir . '/includes/class-emails.php',
+    'Ontario\\Export_CSV' => $baseDir . '/includes/class-export-csv.php',
     'Ontario\\Frontend' => $baseDir . '/includes/class-frontend.php',
     'Ontario\\Post_Types' => $baseDir . '/includes/class-post-types.php',
     'Ontario\\Shortcodes' => $baseDir . '/includes/class-shortcodes.php',

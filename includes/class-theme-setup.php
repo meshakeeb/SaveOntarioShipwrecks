@@ -57,6 +57,7 @@ class Theme_Setup {
 		new Shortcodes;
 		new Subscription;
 		new Capabilities;
+		new Export_CSV;
 	}
 
 	/**

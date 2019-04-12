@@ -77,9 +77,6 @@ add_action( 'wp_ajax_nopriv_userinfo_edit', array( $boltAjax, 'deny' ) );
 add_action( 'wp_ajax_import_members', array( $boltAjax, 'import_members' ) );
 add_action( 'wp_ajax_nopriv_import_members', array( $boltAjax, 'deny' ) );
 
-add_action( 'wp_ajax_exportBuoy', array( $boltBuoy, 'exportBuoy' ) );
-add_action( 'wp_ajax_nopriv_exportBuoy', array( $boltAjax, 'deny' ) );
-
 //for edit profile
 add_filter( 'parse_query', array($bolt,'show_current_user_attachments' ) );
 

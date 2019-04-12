@@ -125,17 +125,4 @@ class BoltMediaBuoy {
 			return $output;
 
 	}
-
-	function exportBuoy() {
-	  $response = false;
-	  //print_r( $_POST );
-	  //[query_string] => userID=orderby%3DE.field_bodywater_value%26order%3DDESC
-
-	  $response = $this->GetBuoys($_POST['query_string']);
-
-	  wp_send_json( json_encode($response) );
-
-	  wp_die();
-	}
-
 }

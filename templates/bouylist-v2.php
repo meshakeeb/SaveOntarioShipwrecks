@@ -1,5 +1,5 @@
-<?php 
-	global $shortname; 
+<?php
+	global $shortname;
 	require_once get_theme_file_path().'/customization/class/class.buoy.php';
 	$data = new BoltMediaBuoy;
 ?>
@@ -7,14 +7,14 @@
 /* Template Name: Buoy list V2*/
 get_header(); ?>
 
-	
+
 	<div class="page_header">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-6">
 					<h1 class="text-capitalize">Buoy Sites</h1>
 				</div>
-		
+
 				<div class="col-sm-6">
 					<div class="bcrumbs">
 						<div class="container">
@@ -23,16 +23,16 @@ get_header(); ?>
 								<li><span>Buoy Site List</span></li>
 							</ul>
 						</div>
-					</div>				
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="about-single">
 		<div class="container row-eq-height">
 			<div class="col-md-8 col-sm-7 about-single-content">
-			
+
 				<div class="about-single-info">
 					<div id="google-map" class="google-map" style="height: 450px;">
 					</div>
@@ -43,21 +43,21 @@ get_header(); ?>
 							<button type="submit" name="submit" value="search"><i class="fa fa-search"></i></button>
 						</form>
 					</div>
-                   
+
+					<?php if( is_user_logged_in() ) : ?>
 					<div>
 						<br>
 						<h2>
-							<?php //print_r( $data->GetBuoys() ); ?>
-							<form id="export_buoy" action="<?php echo admin_url('admin-ajax.php'); ?>">
-								<input type="hidden" name="action" value="exportBuoy">
-								<input type="text" name="query_string" value="<?php echo $_SERVER['QUERY_STRING']; ?>">										
+							<form id="export_buoy" action="" method="post">
+								<input type="hidden" name="export_me" value="buoy-site-list">
 								<p><button class="btn btn-primary"><i class="fa fa-cloud-download"></i> Export as CSV</button></p>
-							</form>							
-							
-						</h2>
-					</div>	
+							</form>
 
-					<div class="table-responsive">					
+						</h2>
+					</div>
+					<?php endif; ?>
+
+					<div class="table-responsive">
 					<table class="table data-table table-striped">
 						<thead>
 							<tr>
@@ -75,9 +75,9 @@ get_header(); ?>
 							</tr>
 						</thead>
 						<tbody>
-						<?php foreach($data->GetBuoys() as $d) : 
+						<?php foreach($data->GetBuoys() as $d) :
 
-							$chapter_edior=get_the_author_meta( 'chapter',  $current_user->ID); 
+							$chapter_edior=get_the_author_meta( 'chapter',  $current_user->ID);
 
 							if($chapter_edior==500){ $comm='SOS Windsor'; }
 							if($chapter_edior==499){ $comm='SOS Toronto'; }
@@ -88,47 +88,47 @@ get_header(); ?>
 							if($chapter_edior==493){ $comm='SOS Huron Shores'; }
 							if($chapter_edior==492){ $comm='SOS Hamilton'; }
 							if($chapter_edior==491){ $comm='SOS Barrie'; }
-							
+
 							$ty=array();
-							
+
 							$argsq = array(
 								'post_type'   => 'buoystatus',
 								'post_status' => 'publish',
 								'meta_key'	  => 'site_name',
 								'meta_value'  => $d->postID
-							); 
+							);
 
-							$events = get_posts( $argsq ); 
+							$events = get_posts( $argsq );
 
-							foreach($events as $event ) { 
+							foreach($events as $event ) {
 								$ty[]=get_post_meta( $event->ID, 'buoy_status', true );
 							}
-						
+
 						?>
 							<tr>
 								<td><a href="<?php echo get_permalink($d->postID); ?>"><?php echo get_the_title($d->postID); ?></a></td>
 								<td><?php echo $d->group_name; ?></td>
 								<td><?php echo $d->water; ?></td>
 								<td><?php echo $d->latitude; ?></td>
-								<td><?php echo $d->longitude; ?></td>       
+								<td><?php echo $d->longitude; ?></td>
 
 								<td><?php echo (!empty($ty)) ? ucfirst($ty[0]) : '-'; ?></td>
 								<td>
 									<?php $user = wp_get_current_user(); ?>
-									<?php 
-									if ( 
-										in_array( 'administrator', (array) $user->roles ) 
-										|| in_array( 'chapter_editor', (array) $user->roles ) 
-										|| in_array( 'buoy_editors', (array) $user->roles ) 
+									<?php
+									if (
+										in_array( 'administrator', (array) $user->roles )
+										|| in_array( 'chapter_editor', (array) $user->roles )
+										|| in_array( 'buoy_editors', (array) $user->roles )
 										|| in_array( 'bolt_chapter_editor', (array) $user->roles )
-									) : 
-									?> 
+									) :
+									?>
 										<?php if($comm==$d->group_name || in_array( 'administrator', (array) $user->roles )) : ?>
 											<a href="<?php echo home_url().'/buoy-program/buoy-site-list/edit/?id='.$d->postID; ?>" class="remove"><i class="fa fa-edit"></i></a>
-										<?php else : ?>  
+										<?php else : ?>
 											<a href="<?php echo get_bloginfo("url") .'/report-buoy-status/?site='.get_the_title($d->postID); ?>" class="remove"><i class="fa fa-edit"></i></a>
 										<?php endif; ?>
-									<?php endif; ?>	
+									<?php endif; ?>
 								</td>
 							</tr>
 						<?php endforeach; ?>
@@ -138,11 +138,11 @@ get_header(); ?>
 					</div>
 				</div>
 			</div>
-<?php get_sidebar(); //echo '<pre>'; print_r($data->GetBuoys1(); echo '</pre>';?>
+<?php get_sidebar();?>
 		</div>
 	</div>
 <?php //include( get_template_directory() . '/widgets/cta.php'); ?>
- 
+
 <script src="<?php bloginfo('template_url'); ?>/js/vendor/jquery-1.11.2.js"></script>
 <script src="<?php bloginfo('template_url'); ?>/js/vendor/bootstrap.min.js"></script>
 <script src="<?php bloginfo('template_url'); ?>/js/main.js"></script>
@@ -151,42 +151,42 @@ get_header(); ?>
 <script src="<?php bloginfo('template_url'); ?>/js/gmaps.js"></script>
 <script type="text/javascript">
 
-	    jQuery(document).ready(function(){
-     
-        var map = new GMaps({
-            el: '#google-map',
-            lat: 43.589045,
-            lng: -79.644120,
-            scrollwheel: false,zoom: 15
+		jQuery(document).ready(function(){
 
-        });
-     
-        /* Map Bound */
-        var bounds = [];
-     
-        <?php foreach( $data->GetBuoys1() as $m ) { if($m->latitude!='' && $m->latitude!='0.000000'){?>
-            /* Set Bound Marker */
-            var latlng = new google.maps.LatLng(<?php echo $m->latitude; ?>, <?php echo $m->longitude; ?>);
-            bounds.push(latlng);
-            /* Add Marker */
-           map.addMarker({
-                lat: <?php echo $m->latitude; ?>,
-                lng: <?php echo $m->longitude; ?>,
-                title: '<?php echo  str_replace("'", "",$name); ?>',
-                infoWindow: {content: '<p><?php echo get_the_title($m->postID); ?><br><?php echo $m->group_name; ?></p>'}
-            });
-        <?php }}   ?>   	
-     
-        /* Fit All Marker to map */
-        map.fitLatLngBounds(bounds);
-        });
-	    
+		var map = new GMaps({
+			el: '#google-map',
+			lat: 43.589045,
+			lng: -79.644120,
+			scrollwheel: false,zoom: 15
+
+		});
+
+		/* Map Bound */
+		var bounds = [];
+
+		<?php foreach( $data->GetBuoys1() as $m ) { if($m->latitude!='' && $m->latitude!='0.000000'){?>
+			/* Set Bound Marker */
+			var latlng = new google.maps.LatLng(<?php echo $m->latitude; ?>, <?php echo $m->longitude; ?>);
+			bounds.push(latlng);
+			/* Add Marker */
+		   map.addMarker({
+				lat: <?php echo $m->latitude; ?>,
+				lng: <?php echo $m->longitude; ?>,
+				title: '<?php echo  str_replace("'", "",$name); ?>',
+				infoWindow: {content: '<p><?php echo get_the_title($m->postID); ?><br><?php echo $m->group_name; ?></p>'}
+			});
+		<?php }}   ?>
+
+		/* Fit All Marker to map */
+		map.fitLatLngBounds(bounds);
+		});
+
 	//google.maps.event.addDomListener(window, 'load', init);
 
 	function init() {
 		var mapOptions = {
 			zoom: 9,
-			center: new google.maps.LatLng(43.589045, -79.644120),	
+			center: new google.maps.LatLng(43.589045, -79.644120),
 			styles: [{"featureType":"administrative.country","elementType":"geometry","stylers":[{"visibility":"simplified"},{"hue":"#ff0000"}]}]
 		};
 		var mapElement = document.getElementById('map');
@@ -199,14 +199,5 @@ get_header(); ?>
 	}
 </script>
 
-<script type="text/javascript">
-    $('#export_buoy').on('submit', function(e) {
-        e.preventDefault();
-        var $form = $(this);
-        $.post($form.attr('action'), $form.serialize(), function(data) {
-            $form.append(data);
-        }, 'json');
-    });		
-</script>
 <?php include( get_template_directory() . '/widgets/cta.php'); ?>
 <?php get_footer(); ?>

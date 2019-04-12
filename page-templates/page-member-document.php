@@ -50,6 +50,7 @@ if ( have_posts() ) :
 
 									<?php
 									if ( have_rows( 'field_5c9e61f9ccf95' ) ) :
+										echo '<div style="margin-bottom: 20px;">';
 										while ( have_rows( 'field_5c9e61f9ccf95' ) ) :
 											the_row();
 
@@ -73,6 +74,7 @@ if ( have_posts() ) :
 											(<?php echo strtoupper( $filetype['ext'] ); ?>)<br>
 											<?php
 										endwhile;
+										echo '</div>';
 									endif;
 								endwhile;
 							endif;

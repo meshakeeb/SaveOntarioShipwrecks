@@ -228,8 +228,8 @@ use Ontario\Subscription;
 						<div class="col-md-12">
 							<a href="add-product" class="item">
 								<div class="content">
-									<h4>Add New Product</h4>
-									<p>Add a new product to the SOS shop.</p>
+									<h4>Add or edit an existing product</h4>
+									<p>Add, edit or delete products to the SOS shop.</p>
 									<span class="rmore">Go <i class="fa fa-arrow-right"></i></span>
 								</div>
 							</a>

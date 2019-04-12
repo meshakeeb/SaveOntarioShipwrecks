@@ -26,5 +26,6 @@ class ACF {
 	 */
 	public function __construct() {
 		require_once 'acf/member-documents.php';
+		require_once 'acf/new-product.php';
 	}
 }

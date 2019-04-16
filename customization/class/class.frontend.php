@@ -415,17 +415,17 @@ class BoltMediaFront {
 
 	public static function get_dashboard_newsletter( $user_info ) {
 		if (
-			$user_info->has( 'provincial_membership' ) ||
-			$user_info->has( 'administrator' ) ||
-			$user_info->has( 'bolt_chapter_editor' ) ||
-			( $user_info->has( 'bolt_chapter_member' ) && $user_info->has( 'send_newsletter' ) )
+			$user_info->has_cap( 'provincial_membership' ) ||
+			$user_info->has_cap( 'administrator' ) ||
+			$user_info->has_cap( 'bolt_chapter_editor' ) ||
+			( $user_info->has_cap( 'bolt_chapter_member' ) && $user_info->has_cap( 'send_newsletter' ) )
 		) {
 			$category = get_the_title( $user_info->chapter );
 			if ( isset( $_POST['action'] ) && 'send_to_members' === $_POST['action'] ) {
 				BoltMediaFront::AddNewsletter( $_POST );
 			}
 
-			get_template_part( 'customization/views/dashboard', 'newsletter' );
+			require_once locate_template( 'customization/views/dashboard-newsletter.php' );
 			return;
 		}
 
@@ -526,9 +526,11 @@ class BoltMediaFront {
 			$subs = $wpdb->get_row(
 				$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}pms_member_subscriptions WHERE `user_id` = %d", $u->ID )
 			);
-			if (
-				! in_array( $subs->status, $_POST['members_status'], true ) ||
-				'' === get_the_title( get_user_meta( $u->ID, 'chapter', true ) )
+			if ( $subs &&
+				(
+					! in_array( $subs->status, $_POST['members_status'], true ) ||
+					'' === get_the_title( get_user_meta( $u->ID, 'chapter', true ) )
+				)
 			) {
 				continue;
 			}
@@ -540,8 +542,14 @@ class BoltMediaFront {
 		$headers .= 'From: Save Ontario Shipwrecks <wordpress@saveontarioshipwrecks.ca>' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
-		$mail = wp_mail( $to, $_POST['post_title'], $_POST['bolt_newsletter'], $headers );
-		if ( $mail ) {
+		$result = true;
+		$chunks = array_chunk( $to, 50 );
+		foreach ( $chunks as $chunk ) {
+			$mail   = wp_mail( $chunk, $_POST['post_title'], $_POST['bolt_newsletter'], $headers );
+			$result = $result || $mail;
+		}
+
+		if ( $result ) {
 			echo '<div class="alert alert-success">Newsletter Sent</div>';
 		} else {
 			echo '<div class="alert alert-danger">ERROR: Mail Not Sent!</div>';

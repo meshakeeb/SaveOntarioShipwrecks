@@ -75,9 +75,7 @@ class Email_Queue extends Emails {
 		 *
 		 * @param int $interval Value of interval. Default 360.
 		 */
-		$interval = absint( apply_filters( 'simple_email_queue_interval', 3 * MINUTE_IN_SECONDS ) );
-
-		return $interval;
+		return absint( apply_filters( 'simple_email_queue_interval', 1 * MINUTE_IN_SECONDS ) );
 	}
 
 	/**
@@ -91,9 +89,7 @@ class Email_Queue extends Emails {
 		 *
 		 * @param int $max Maximum number of emails in interval. Default 10.
 		 */
-		$max = absint( apply_filters( 'simple_email_queue_max', 20 ) );
-
-		return $max;
+		return absint( apply_filters( 'simple_email_queue_max', 40 ) );
 	}
 
 	/**

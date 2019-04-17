@@ -27,5 +27,9 @@ class ACF {
 	public function __construct() {
 		require_once 'acf/member-documents.php';
 		require_once 'acf/new-product.php';
+		require_once 'acf/new-event.php';
+		require_once 'acf/new-event-venue.php';
+		require_once 'acf/new-event-organizer.php';
+		require_once 'acf/new-event-cost.php';
 	}
 }

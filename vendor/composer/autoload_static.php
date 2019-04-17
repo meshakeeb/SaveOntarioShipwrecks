@@ -32,6 +32,7 @@ class ComposerStaticInit9cfcc2985893d6e5c1499993620aacf9
         'Ontario' => __DIR__ . '/../..' . '/includes/class-ontario.php',
         'Ontario\\ACF' => __DIR__ . '/../..' . '/includes/class-acf.php',
         'Ontario\\Capabilities' => __DIR__ . '/../..' . '/includes/class-capabilities.php',
+        'Ontario\\Choices' => __DIR__ . '/../..' . '/includes/class-choices.php',
         'Ontario\\Email_Queue' => __DIR__ . '/../..' . '/includes/class-email-queue.php',
         'Ontario\\Emails' => __DIR__ . '/../..' . '/includes/class-emails.php',
         'Ontario\\Export_CSV' => __DIR__ . '/../..' . '/includes/class-export-csv.php',

@@ -60,7 +60,7 @@ class Email_Queue extends Emails {
 	 * @param string|array $headers     Optional. Additional headers.
 	 * @param string|array $attachments Optional. Files to attach.
 	 */
-	public static function add_email_to_queue( $to, $subject, $message, $headers = '', $attachments = array() ) {
+	public static function add_email_to_queue( $to, $subject, $message, $headers = '', $attachments = [] ) {
 		Email_Queue::get_instance()->add_to_queue( $to, $subject, $message, $headers, $attachments );
 	}
 
@@ -153,7 +153,7 @@ class Email_Queue extends Emails {
 	 * @param string|array $headers     Optional. Additional headers.
 	 * @param string|array $attachments Optional. Files to attach.
 	 */
-	public function add_to_queue( $to, $subject, $message, $headers = '', $attachments = array() ) {
+	public function add_to_queue( $to, $subject, $message, $headers = '', $attachments = [] ) {
 		// Make an array with attributes
 		$atts = compact( 'subject', 'message', 'headers', 'attachments' );
 
@@ -168,12 +168,12 @@ class Email_Queue extends Emails {
 		// Look for existing addresses
 		$existing = $this->get_queue();
 		if ( ! is_array( $existing ) ) {
-			$existing = array();
+			$existing = [];
 		}
 
 		// Loop through all addresses and add them to queue
 		foreach ( (array) $to as $address ) {
-			$existing[] = array( $address => $key );
+			$existing[] = [ $address => $key ];
 		}
 
 		$this->set_queue( $existing );
@@ -296,7 +296,7 @@ class Email_Queue extends Emails {
 
 		// If number of sent is smaller than maximum number, schedule task
 		if ( $sent < $this->max() ) {
-			$task = new Task( array( $this, 'process_queue' ) );
+			$task = new Task( [ $this, 'process_queue' ] );
 			$task->schedule();
 		}
 	}

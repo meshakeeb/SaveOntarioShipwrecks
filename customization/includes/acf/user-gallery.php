@@ -1,5 +1,5 @@
 <?php
-$all_chapters = $bolt->chapter_list();
+$all_chapters = \Ontario\Choices::get_chapters();
 $user = get_current_user_id();
 $chapters = array();
 
@@ -8,8 +8,8 @@ $user_role = get_userdata( $user );
 $chapters[ $user_meta['chapter'][0] ]= get_the_title( $user_meta['chapter'][0] ) ;
 
 if ( $user_role && ( empty($chapters) ||  in_array("provincial_membership", $user_role->roles) || in_array("administrator", $user_role->roles) )  ){
-	foreach (  $all_chapters as $chapter ){
-		$chapters[$chapter->ID] = $chapter->post_title;
+	foreach (  $all_chapters as $chapter_id => $chapter_title ){
+		$chapters[ $chapter_id ] = $chapter_title;
 	}
 }
 
@@ -26,8 +26,8 @@ acf_add_local_field_group(array(
 			'type' => 'checkbox',
 			'choices' => array(
 				1	=> 'Yes'
-			),			
-		),		
+			),
+		),
 
 		array(
 			'key' => 'u_gallery_name',
@@ -43,8 +43,8 @@ acf_add_local_field_group(array(
 			'label' => 'Chapter',
 			'type' => 'select',
 			'required' => 1,
-			'choices' => $chapters,			
-		),		
+			'choices' => $chapters,
+		),
 
 		array(
 			'key' => 'u_gallery_images',
@@ -53,15 +53,15 @@ acf_add_local_field_group(array(
 			'type' => 'gallery',
 			'required' => 1,
 			'min' => 1,
-		),	
+		),
 
- 		array(
+		 array(
 			'key' => 'u_gallery_notes',
 			'name' => 'u_gallery_notes',
 			'label' => 'Gallery Notes',
 			'type' => 'textarea',
 			'required' => 0,
-		),			
+		),
 
 	),
 	'location' => array(

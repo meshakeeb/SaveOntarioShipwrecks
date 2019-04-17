@@ -10,11 +10,10 @@
 
 acf_add_local_field_group(
 	[
-		'key'            => 'group_5cafbbdbacb14',
-		'title'          => 'New Product',
-		'hide_on_screen' => '',
-		'active'         => 1,
-		'fields'         => [
+		'key'    => 'group_5cafbbdbacb14',
+		'title'  => 'New Product',
+		'active' => true,
+		'fields' => [
 			[
 				'key'           => 'field_5cafbc02bf9c3',
 				'label'         => 'Product Category',

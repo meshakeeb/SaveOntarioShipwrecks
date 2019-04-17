@@ -27,12 +27,6 @@ $boltPDF   = new BoltPDF;
 $boltPMS   = new BoltPMS;
 $boltBuoy  = new BoltMediaBuoy;
 
-//GET/LOAD ALL FUNCTION FILES @ 'customization/includes' DIRECTORY
-$files = glob(get_template_directory().'/customization/includes/' . "*.php");
-foreach($files as $file):
-	include $file;
-endforeach;
-
 add_filter( 'wp_get_nav_menu_items', array( $boltFront,'exclude_menu_items' ), 99, 3 );
 
 add_action( 'user_new_form', array( $bolt, 'profile_fields' ) );
@@ -146,9 +140,6 @@ add_action(
 	10,
 	1
 );
-
-//ACF user-gallery after submitting new gallery
-add_action('acf/save_post', 'Boltmedia\\Includes\\ACF\\acfSavePost', 99);
 
 //wp-admin/users page to add new columns
 add_filter( 'manage_users_columns', array($boltPMS, 'pmsUserTable'), 9999, 1 );

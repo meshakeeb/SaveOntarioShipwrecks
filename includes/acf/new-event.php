@@ -29,7 +29,7 @@ acf_add_local_field_group(
 		'active' => true,
 		'fields' => [
 			[
-				'key'      => '_thumbnail_id',
+				'key'      => 'field_5cafc203d1543',
 				'name'     => '_thumbnail_id',
 				'label'    => 'Event Image',
 				'type'     => 'image',
@@ -74,6 +74,21 @@ acf_add_local_field_group(
 				],
 				'display_format' => 'F j, Y H:i:s',
 				'return_format'  => 'Y-m-d H:i:s',
+			],
+
+			[
+				'key'           => 'is_course',
+				'label'         => '',
+				'name'          => 'is_course',
+				'type'          => 'checkbox',
+				'instructions'  => '',
+				'required'      => 0,
+				'choices'       => [ 1 => 'Mark as Course' ],
+				'allow_custom'  => 0,
+				'layout'        => 'vertical',
+				'toggle'        => 0,
+				'return_format' => 'value',
+				'save_custom'   => 0,
 			],
 		],
 	]

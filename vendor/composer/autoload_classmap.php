@@ -9,6 +9,7 @@ return array(
     'Ontario' => $baseDir . '/includes/class-ontario.php',
     'Ontario\\ACF' => $baseDir . '/includes/class-acf.php',
     'Ontario\\Capabilities' => $baseDir . '/includes/class-capabilities.php',
+    'Ontario\\Email_Queue' => $baseDir . '/includes/class-email-queue.php',
     'Ontario\\Emails' => $baseDir . '/includes/class-emails.php',
     'Ontario\\Export_CSV' => $baseDir . '/includes/class-export-csv.php',
     'Ontario\\Frontend' => $baseDir . '/includes/class-frontend.php',
@@ -18,4 +19,9 @@ return array(
     'Ontario\\Theme_Setup' => $baseDir . '/includes/class-theme-setup.php',
     'Ontario\\Traits\\Ajax' => $baseDir . '/includes/traits/class-ajax.php',
     'Ontario\\Traits\\Hooker' => $baseDir . '/includes/traits/class-hooker.php',
+    'Temporary_Command' => $vendorDir . '/dimadin/wp-temporary/cli/Temporary_Command.php',
+    'WP_Temporary' => $vendorDir . '/dimadin/wp-temporary/class-wp-temporary.php',
+    'dimadin\\WP\\Library\\Backdrop\\Main' => $vendorDir . '/dimadin/backdrop/inc/Main.php',
+    'dimadin\\WP\\Library\\Backdrop\\Server' => $vendorDir . '/dimadin/backdrop/inc/Server.php',
+    'dimadin\\WP\\Library\\Backdrop\\Task' => $vendorDir . '/dimadin/backdrop/inc/Task.php',
 );

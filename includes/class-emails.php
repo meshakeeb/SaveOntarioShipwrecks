@@ -32,7 +32,7 @@ class Emails {
 	 *
 	 * @return bool success
 	 */
-	private function send( $to, $subject, $message, $headers = '', $attachments = [] ) {
+	public function send( $to, $subject, $message, $headers = '', $attachments = [] ) {
 		$this->add_filters();
 		$return = wp_mail( $to, $subject, $message, $headers, $attachments );
 		$this->remove_filters();

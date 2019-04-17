@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'dimadin\\WP\\Library\\Backdrop\\' => array($vendorDir . '/dimadin/backdrop/inc'),
     'Ontario\\' => array($baseDir . '/includes'),
 );

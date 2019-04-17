@@ -1,0 +1,25 @@
+{
+	"name": "dimadin/wp-temporary",
+	"description": "WordPress library to cache data to the database. Like transients without object cache.",
+	"keywords": ["cache"],
+	"homepage": "https://github.com/dimadin/wp-temporary",
+	"type": "library",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Milan Dinić",
+			"email": "milan@srpski.biz",
+			"homepage": "https://milandinic.com/"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/dimadin/wp-temporary/issues",
+		"source": "https://github.com/dimadin/wp-temporary"
+	},
+	"require": {
+		"php": ">=5.2.4"
+	},
+	"autoload": {
+		"classmap": ["class-wp-temporary.php","cli/Temporary_Command.php"]
+	}
+}

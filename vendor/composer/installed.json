@@ -1,1 +1,87 @@
-[]
+[
+    {
+        "name": "dimadin/wp-temporary",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/dimadin/wp-temporary.git",
+            "reference": "193994a6f88b1d2980ac3408025d0fd476556ee1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/dimadin/wp-temporary/zipball/193994a6f88b1d2980ac3408025d0fd476556ee1",
+            "reference": "193994a6f88b1d2980ac3408025d0fd476556ee1",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.4"
+        },
+        "time": "2018-09-14T14:53:09+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "class-wp-temporary.php",
+                "cli/Temporary_Command.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Milan Dinić",
+                "email": "milan@srpski.biz",
+                "homepage": "https://milandinic.com/"
+            }
+        ],
+        "description": "WordPress library to cache data to the database. Like transients without object cache.",
+        "homepage": "https://github.com/dimadin/wp-temporary",
+        "keywords": [
+            "cache"
+        ]
+    },
+    {
+        "name": "dimadin/backdrop",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/dimadin/Backdrop.git",
+            "reference": "6d35ece19db224f189e6ef5371ffffef537c247a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/dimadin/Backdrop/zipball/6d35ece19db224f189e6ef5371ffffef537c247a",
+            "reference": "6d35ece19db224f189e6ef5371ffffef537c247a",
+            "shasum": ""
+        },
+        "require": {
+            "dimadin/wp-temporary": "^1.0",
+            "php": ">=5.4"
+        },
+        "time": "2018-09-14T15:45:30+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "dimadin\\WP\\Library\\Backdrop\\": "inc/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Milan Dinić",
+                "email": "milan@srpski.biz",
+                "homepage": "https://milandinic.com/"
+            }
+        ],
+        "description": "Backdrop",
+        "homepage": "https://github.com/dimadin/Backdrop"
+    }
+]

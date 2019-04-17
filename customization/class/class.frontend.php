@@ -538,22 +538,8 @@ class BoltMediaFront {
 			array_push( $to, $u->user_email );
 		}
 
-		$headers  = null;
-		$headers .= 'From: Save Ontario Shipwrecks <wordpress@saveontarioshipwrecks.ca>' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-		$result = true;
-		$chunks = array_chunk( $to, 50 );
-		foreach ( $chunks as $chunk ) {
-			$mail   = wp_mail( $chunk, $_POST['post_title'], $_POST['bolt_newsletter'], $headers );
-			$result = $result || $mail;
-		}
-
-		if ( $result ) {
-			echo '<div class="alert alert-success">Newsletter Sent</div>';
-		} else {
-			echo '<div class="alert alert-danger">ERROR: Mail Not Sent!</div>';
-		}
+		\Ontario\Email_Queue::add_email_to_queue( $to, $_POST['post_title'], $_POST['bolt_newsletter'] );
+		echo '<div class="alert alert-success">Newsletter Sent</div>';
 	}
 
 	public static function get_dashboard_chapters( $user_info )

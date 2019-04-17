@@ -53,11 +53,11 @@ class Theme_Setup {
 		new ACF;
 		new Post_Types;
 		new Frontend;
-		new Emails;
 		new Shortcodes;
 		new Subscription;
 		new Capabilities;
 		new Export_CSV;
+		Email_Queue::get_instance();
 	}
 
 	/**

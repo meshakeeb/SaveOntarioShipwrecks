@@ -31,5 +31,6 @@ class ACF {
 		require_once 'acf/new-event-venue.php';
 		require_once 'acf/new-event-organizer.php';
 		require_once 'acf/new-event-cost.php';
+		require_once 'acf/user-gallery.php';
 	}
 }

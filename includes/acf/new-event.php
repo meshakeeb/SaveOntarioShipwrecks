@@ -22,7 +22,6 @@ if (
 	$chapters = \Ontario\Choices::get_chapters( 'post_name' );
 }
 
-
 acf_add_local_field_group(
 	[
 		'key'    => 'bolt_user_events',

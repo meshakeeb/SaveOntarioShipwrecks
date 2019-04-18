@@ -114,6 +114,11 @@ class ACF {
 				if ( empty( $_POST['acf']['_EventOrganizerID'] ) ) {
 					$this->create_organizer( $post_id );
 				}
+
+				if ( ! empty( $_POST['acf']['has_payment'] ) ) {
+					$this->create_ticket( $post_id );
+				}
+
 				return;
 				break;
 			default:
@@ -192,6 +197,31 @@ class ACF {
 		if ( $organizer > 0 ) {
 			update_post_meta( $post_id, '_EventOrganizerID', $organizer );
 		}
+	}
+
+	/**
+	 * Create ticket
+	 *
+	 * @param int $post_id Post ID of inserted/updated post.
+	 */
+	private function create_ticket( $post_id ) {
+		$module    = \Tribe__Tickets__Commerce__PayPal__Main::get_instance();
+		$ticket_id = $module->ticket_add(
+			$post_id,
+			[
+				'ticket_name'             => $_POST['acf']['_TicketType'],
+				'ticket_price'            => '35',
+				'tribe-ticket'            => [ 'capacity' => $_POST['acf']['_TicketCapacity'] ],
+				'ticket_description'      => '',
+				'ticket_show_description' => '1',
+				'ticket_start_date'       => '',
+				'ticket_start_time'       => '',
+				'ticket_end_date'         => '',
+				'ticket_end_time'         => '',
+				'ticket_sku'              => '',
+				'ticket_id'               => '',
+			]
+		);
 	}
 
 	/**

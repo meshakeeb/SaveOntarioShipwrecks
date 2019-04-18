@@ -11,7 +11,6 @@
 namespace Ontario;
 
 use WP_Temporary;
-use dimadin\WP\Library\Backdrop\Task;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,16 +23,13 @@ class Email_Queue extends Emails {
 	 * Add all the methods to appropriate hooks.
 	 */
 	public function __construct() {
-		// Add task scheduler early on `shutdown` hook
-		add_action( 'shutdown', [ $this, 'maybe_schedule_task' ], 1 );
-
 		// Add temporaries garbage collector
 		add_action( 'wp_scheduled_delete', [ 'WP_Temporary', 'clean' ], 1 );
 
 		// Cron Job.
 		add_action( 'init', [ $this, 'add_cron_job' ] );
 		add_filter( 'cron_schedules', [ $this, 'add_cron_interval' ] );
-		add_action( 'sos_mailing_queue', [ $this, 'process_queue' ], 1 );
+		add_action( 'sos_mailing_queue', [ $this, 'maybe_schedule_task' ], 1 );
 	}
 
 	/**
@@ -295,11 +291,6 @@ class Email_Queue extends Emails {
 	 * Schedule task if it's needed.
 	 */
 	public function maybe_schedule_task() {
-		// Check if this is Backdrop request
-		if ( did_action( 'wp_ajax_nopriv_hm_backdrop_run' ) ) {
-			return;
-		}
-
 		// Check if queue exists
 		$exists = WP_Temporary::get( 'simple_email_queue_exist' );
 		if ( ! $exists ) {
@@ -314,8 +305,7 @@ class Email_Queue extends Emails {
 
 		// If number of sent is smaller than maximum number, schedule task
 		if ( $sent < $this->max() ) {
-			$task = new Task( [ $this, 'process_queue' ] );
-			$task->schedule();
+			$this->process_queue();
 		}
 	}
 

@@ -18,7 +18,7 @@
 				<select name="post_category" id="chapter" class="form-control">
 					<option value="all">Every Active Member</option>
 					<?php foreach( \Ontario\Choices::get_chapters() as $chapter_id => $chapter_title ) : ?>
-						<option value="<?php echo $chapter_id; ?>" <?php selected( $chapter_id, $chapter ); ?>>All Active <?php echo $chapter_title; ?> Members</option>
+						<option value="<?php echo $chapter_id; ?>" <?php selected( $chapter_id, $user_info->chapter ); ?>>All Active <?php echo $chapter_title; ?> Members</option>
 					 <?php endforeach; ?>
 				</select>
 			</label>

@@ -34,6 +34,19 @@ class ACF {
 		require_once 'acf/new-product.php';
 
 		$this->action( 'acf/save_post', 'save_post', 99 );
+		$this->filter( 'acf/fields/google_map/api', 'acf_google_map_api' );
+	}
+
+	/**
+	 * Add google map api key to ACF.
+	 *
+	 * @param  array $api Array of google api.
+	 * @return array
+	 */
+	public function acf_google_map_api( $api ) {
+		$api['key'] = 'AIzaSyDNsicAsP6-VuGtAb1O9riI3oc_NOb7IOU';
+
+		return $api;
 	}
 
 	/**
@@ -144,8 +157,8 @@ class ACF {
 					'_VenueZip'             => $_POST['acf']['_VenueZip'],
 					'_EventShowMap'         => $_POST['acf']['_EventShowMap'],
 					'_VenueOverwriteCoords' => $_POST['acf']['_VenueOverwriteCoords'],
-					'_VenueLat'             => $_POST['acf']['_VenueLat'],
-					'_VenueLng'             => $_POST['acf']['_VenueLng'],
+					'_VenueLat'             => isset( $_POST['acf']['_VenueLocation'] ) ? $_POST['acf']['_VenueLocation']['lat'] : '',
+					'_VenueLng'             => isset( $_POST['acf']['_VenueLocation'] ) ? $_POST['acf']['_VenueLocation']['lng'] : '',
 				],
 			]
 		);

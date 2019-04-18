@@ -172,10 +172,10 @@ acf_add_local_field_group(
 			],
 
 			[
-				'key'               => '_VenueLat',
-				'label'             => 'Latitude',
-				'name'              => '_VenueLat',
-				'type'              => 'text',
+				'key'               => '_VenueLocation',
+				'label'             => 'Location',
+				'name'              => '_VenueLocation',
+				'type'              => 'google_map',
 				'instructions'      => '',
 				'required'          => 1,
 				'conditional_logic' => [
@@ -186,32 +186,6 @@ acf_add_local_field_group(
 							'value'    => '1',
 						],
 					],
-				],
-				'wrapper'           => [
-					'width' => '50%',
-					'class' => 'col-sm-6',
-				],
-			],
-
-			[
-				'key'               => '_VenueLng',
-				'label'             => 'Longtitude',
-				'name'              => '_VenueLng',
-				'type'              => 'text',
-				'instructions'      => '',
-				'required'          => 1,
-				'conditional_logic' => [
-					[
-						[
-							'field'    => '_EventShowMap',
-							'operator' => '==',
-							'value'    => '1',
-						],
-					],
-				],
-				'wrapper'           => [
-					'width' => '50%',
-					'class' => 'col-sm-6',
 				],
 			],
 		],

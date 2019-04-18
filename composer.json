@@ -2,8 +2,7 @@
 	"name": "boltmedia/ontario",
 	"type": "wordpress-theme",
 	"require": {
-		"dimadin/wp-temporary": "^1.0",
-		"dimadin/backdrop": "^1.0"
+		"dimadin/wp-temporary": "^1.0"
 	},
 	"authors": [
 		{

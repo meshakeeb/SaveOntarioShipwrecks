@@ -22,7 +22,4 @@ return array(
     'Ontario\\Traits\\Hooker' => $baseDir . '/includes/traits/class-hooker.php',
     'Temporary_Command' => $vendorDir . '/dimadin/wp-temporary/cli/Temporary_Command.php',
     'WP_Temporary' => $vendorDir . '/dimadin/wp-temporary/class-wp-temporary.php',
-    'dimadin\\WP\\Library\\Backdrop\\Main' => $vendorDir . '/dimadin/backdrop/inc/Main.php',
-    'dimadin\\WP\\Library\\Backdrop\\Server' => $vendorDir . '/dimadin/backdrop/inc/Server.php',
-    'dimadin\\WP\\Library\\Backdrop\\Task' => $vendorDir . '/dimadin/backdrop/inc/Task.php',
 );

@@ -30,8 +30,10 @@ class Email_Queue extends Emails {
 		// Add temporaries garbage collector
 		add_action( 'wp_scheduled_delete', [ 'WP_Temporary', 'clean' ], 1 );
 
-		// Register listener for background processes from Backdrop library.
-		add_action( 'admin_init', [ '\dimadin\WP\Library\Backdrop\Main', 'init' ] );
+		// Cron Job.
+		add_action( 'init', [ $this, 'add_cron_job' ] );
+		add_filter( 'cron_schedules', [ $this, 'add_cron_interval' ] );
+		add_action( 'sos_mailing_queue', [ $this, 'process_queue' ], 1 );
 	}
 
 	/**
@@ -76,6 +78,22 @@ class Email_Queue extends Emails {
 		 * @param int $interval Value of interval. Default 360.
 		 */
 		return absint( apply_filters( 'simple_email_queue_interval', 1 * MINUTE_IN_SECONDS ) );
+	}
+
+	/**
+	 * Adds custom interval based on interval settings to wp_cron.
+	 *
+	 * @param array $schedules
+	 *
+	 * @return array
+	 */
+	public function add_cron_interval( $schedules ) {
+		$schedules['sos'] = [
+			'interval' => $this->interval(),
+			'display'  => 'Interval for sending mail',
+		];
+
+		return $schedules;
 	}
 
 	/**
@@ -299,5 +317,21 @@ class Email_Queue extends Emails {
 			$task = new Task( [ $this, 'process_queue' ] );
 			$task->schedule();
 		}
+	}
+
+	/**
+	 * (Re)sets wp_cron, e.g. on activation and interval update.
+	 */
+	public function add_cron_job() {
+		if ( true === boolval( get_option( 'sos_mailing_queue_cron_added' ) ) ) {
+			return;
+		}
+
+		if ( wp_next_scheduled( 'sos_mailing_queue' ) ) {
+			wp_clear_scheduled_hook( 'sos_mailing_queue' );
+		}
+
+		wp_schedule_event( time(), 'sos', 'sos_mailing_queue' );
+		add_option( 'sos_mailing_queue_cron_added', true );
 	}
 }

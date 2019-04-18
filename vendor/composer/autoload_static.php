@@ -7,10 +7,6 @@ namespace Composer\Autoload;
 class ComposerStaticInit9cfcc2985893d6e5c1499993620aacf9
 {
     public static $prefixLengthsPsr4 = array (
-        'd' => 
-        array (
-            'dimadin\\WP\\Library\\Backdrop\\' => 28,
-        ),
         'O' => 
         array (
             'Ontario\\' => 8,
@@ -18,10 +14,6 @@ class ComposerStaticInit9cfcc2985893d6e5c1499993620aacf9
     );
 
     public static $prefixDirsPsr4 = array (
-        'dimadin\\WP\\Library\\Backdrop\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/dimadin/backdrop/inc',
-        ),
         'Ontario\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',
@@ -45,9 +37,6 @@ class ComposerStaticInit9cfcc2985893d6e5c1499993620aacf9
         'Ontario\\Traits\\Hooker' => __DIR__ . '/../..' . '/includes/traits/class-hooker.php',
         'Temporary_Command' => __DIR__ . '/..' . '/dimadin/wp-temporary/cli/Temporary_Command.php',
         'WP_Temporary' => __DIR__ . '/..' . '/dimadin/wp-temporary/class-wp-temporary.php',
-        'dimadin\\WP\\Library\\Backdrop\\Main' => __DIR__ . '/..' . '/dimadin/backdrop/inc/Main.php',
-        'dimadin\\WP\\Library\\Backdrop\\Server' => __DIR__ . '/..' . '/dimadin/backdrop/inc/Server.php',
-        'dimadin\\WP\\Library\\Backdrop\\Task' => __DIR__ . '/..' . '/dimadin/backdrop/inc/Task.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

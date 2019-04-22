@@ -485,9 +485,9 @@ class BoltMediaFront {
 			);
 		}
 
-		$exclude = isset( $_POST['send_me'] ) && '1' === $_POST['send_me'] ? null : array( $_POST['userID'] );
-		if ( isset( $_POST['include'] ) ) {
-			$args = array(
+		$to    = array();
+		$users = get_users(
+			array(
 				'meta_query'  => array(
 					array(
 						'key'     => 'chapter',
@@ -500,28 +500,9 @@ class BoltMediaFront {
 				'order'       => 'ASC',
 				'count_total' => false,
 				'fields'      => 'all',
-				'exclude'     => $exclude,
-			);
-		} else {
-			$args = array(
-				'meta_query'  => array(
-					array(
-						'key'     => 'chapter',
-						'value'   => $_POST['post_category'],
-						'compare' => '=',
-					),
-					$subscribers,
-				),
-				'orderby'     => 'name',
-				'order'       => 'ASC',
-				'count_total' => false,
-				'fields'      => 'all',
-				'exclude'     => $exclude,
-			);
-		}
-
-		$to    = array();
-		$users = get_users( $args );
+				'include'     => isset( $_POST['send_me'] ) && $_POST['send_me'] ? array( $_POST['userID'] ) : null,
+			)
+		);
 		foreach ( $users as $u ) {
 			$subs = $wpdb->get_row(
 				$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}pms_member_subscriptions WHERE `user_id` = %d", $u->ID )

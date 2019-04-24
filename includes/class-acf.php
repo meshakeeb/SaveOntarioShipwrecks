@@ -82,7 +82,7 @@ class ACF {
 				$new_title   = sprintf(
 					'%s-%s-%s',
 					get_the_title( $_POST['acf']['field_5abd51c5107bd'] ),
-					$_POST['acf']['field_5abd51c5107bd'],
+					$_POST['acf']['field_5abd51ea107bf'],
 					$date
 				);
 				$post_status = 'publish';
@@ -259,7 +259,7 @@ class ACF {
 
 		$filter_search = [
 			'{name}',
-			'{post}',
+			'{post_url}',
 			'{buoy_status}',
 			'{buoy_date}',
 			'{lat}',

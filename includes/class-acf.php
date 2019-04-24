@@ -210,7 +210,7 @@ class ACF {
 			$post_id,
 			[
 				'ticket_name'             => $_POST['acf']['_TicketType'],
-				'ticket_price'            => '35',
+				'ticket_price'            => $_POST['acf']['_EventCost'],
 				'tribe-ticket'            => [ 'capacity' => $_POST['acf']['_TicketCapacity'] ],
 				'ticket_description'      => '',
 				'ticket_show_description' => '1',

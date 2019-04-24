@@ -24,7 +24,7 @@ class Email_Queue extends Emails {
 	 */
 	public function __construct() {
 		// Add temporaries garbage collector
-		add_action( 'wp_scheduled_delete', [ 'WP_Temporary', 'clean' ], 1 );
+		add_action( 'wp_scheduled_delete', '\\WP_Temporary::clean', 1 );
 
 		// Cron Job.
 		add_action( 'init', [ $this, 'add_cron_job' ] );

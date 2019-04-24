@@ -500,9 +500,9 @@ class BoltMediaFront {
 				'order'       => 'ASC',
 				'count_total' => false,
 				'fields'      => 'all',
-				'include'     => isset( $_POST['send_me'] ) && $_POST['send_me'] ? array( $_POST['userID'] ) : null,
 			)
 		);
+
 		foreach ( $users as $u ) {
 			$subs = $wpdb->get_row(
 				$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}pms_member_subscriptions WHERE `user_id` = %d", $u->ID )
@@ -517,6 +517,11 @@ class BoltMediaFront {
 			}
 
 			array_push( $to, $u->user_email );
+		}
+
+		if ( isset( $_POST['send_me'] ) && $_POST['send_me'] ) {
+			$user = get_userdata( $_POST['userID'] );
+			array_push( $to, $user->user_email );
 		}
 
 		\Ontario\Email_Queue::add_email_to_queue( $to, $_POST['post_title'], $_POST['bolt_newsletter'] );

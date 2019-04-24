@@ -90,6 +90,9 @@ class Theme_Setup {
 		// Let WordPress manage the document title.
 		add_theme_support( 'title-tag' );
 
+		// Add WooCommerce support.
+		add_theme_support( 'woocommerce' );
+
 		// Enable support for Post Thumbnails on posts and pages.
 		add_theme_support( 'post-thumbnails' );
 		set_post_thumbnail_size( 300, 250, true );

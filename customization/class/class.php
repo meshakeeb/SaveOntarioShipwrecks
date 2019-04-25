@@ -102,6 +102,7 @@ class BoltMedia {
 			update_user_meta($user_id, 'billing_state', $_POST['billing_state']);
 			update_user_meta($user_id, 'billing_first_name', $_POST['first_name']);
 			update_user_meta($user_id, 'billing_last_name', $_POST['last_name']);
+			update_user_meta($user_id, 'newslatter', 'on' );
 		}
 	}
 

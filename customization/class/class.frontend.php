@@ -802,7 +802,6 @@ class BoltMediaFront {
 		return $buoys;
 	}
 
-
 	public static function get_chapter_officers( $chapter ) {
 		$posts = get_posts(
 			array(
@@ -833,7 +832,6 @@ class BoltMediaFront {
 
 		return $officers;
 	}
-
 
 	public static function getGalleries($data)
 	{

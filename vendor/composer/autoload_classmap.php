@@ -9,6 +9,7 @@ return array(
     'Ontario' => $baseDir . '/includes/class-ontario.php',
     'Ontario\\ACF' => $baseDir . '/includes/class-acf.php',
     'Ontario\\Capabilities' => $baseDir . '/includes/class-capabilities.php',
+    'Ontario\\Chapter' => $baseDir . '/includes/class-chapter.php',
     'Ontario\\Choices' => $baseDir . '/includes/class-choices.php',
     'Ontario\\Email_Queue' => $baseDir . '/includes/class-email-queue.php',
     'Ontario\\Emails' => $baseDir . '/includes/class-emails.php',

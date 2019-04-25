@@ -1,16 +1,19 @@
 <?php
-$officers = BoltMediaFront::get_chapter_officers( get_the_ID() );
+$officers = \Ontario\Chapter::get_officers_by_chapter( get_the_ID() );
 if ( empty( $officers ) ) {
 	return;
 }
 
 foreach ( $officers as $officer ) :
-	$date_ended = strtotime( get_field( 'date_ended', $officer->post_info->ID ) );
+	$date_ended = get_field( 'date_ended', $officer->ID );
+	$date_ended = strtotime( str_replace( '/', '-', $date_ended ) );
 	$is_expired = $date_ended && current_time( 'timestamp' ) > $date_ended ? true : false;
 
 	if ( $is_expired ) {
 		continue;
 	}
+
+	$user = get_userdata( get_post_meta( $officer->ID, 'member', true ) )
 	?>
 <div class="get-involved">
 	<ul>
@@ -18,15 +21,15 @@ foreach ( $officers as $officer ) :
 			<div class="item">
 				<?php
 					echo wp_get_attachment_image(
-						get_the_author_meta( 'bolt_profilePic', $officer->data->ID ),
+						$user->bolt_profilePic,
 						'thumbnail'
 					);
 				?>
 				<h4>
-					<?php echo get_user_meta( $officer->data->ID, 'billing_first_name', true ) . ' ' . get_user_meta( $officer->data->ID, 'billing_last_name', true ); ?>
+					<?php echo $user->billing_first_name . ' ' . $user->billing_last_name; ?>
 				</h4>
 				<span>
-					<?php echo $officer->data->post_info->post_title; ?><br><?php echo $officer->data->user_email; ?>
+					<?php echo $officer->post_title; ?><br><?php echo $user->user_email; ?>
 				</span>
 			</div>
 		</li>

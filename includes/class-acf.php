@@ -260,6 +260,7 @@ class ACF {
 		$filter_search = [
 			'{name}',
 			'{post_url}',
+			'{buoy_site}',
 			'{buoy_status}',
 			'{buoy_date}',
 			'{lat}',
@@ -269,6 +270,7 @@ class ACF {
 		$filter_replace = [
 			get_user_meta( $current_user->ID, 'billing_first_name', true ),
 			get_permalink( $post_id ),
+			get_field( 'site_name', $post_id ),
 			get_field( 'buoy_status', $post_id ),
 			get_field( 'record_date', $post_id ),
 			$latlng->latitude,

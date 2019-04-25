@@ -286,6 +286,7 @@ Email Content Variables:
 Email Content Variables:
 {name}        : Name
 {post_url}    : URL of Post
+{buoy_site}   : Buoy Site Name
 {buoy_status} : Buoy Status
 {buoy_date}   : Record Date
 {lat}         : Buoy Site Latitude

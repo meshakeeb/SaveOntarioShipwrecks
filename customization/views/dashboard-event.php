@@ -1,3 +1,10 @@
+<?php
+// Delete news.
+$delete_id = isset( $_GET['delete_event_id'] ) ? absint( $_GET['delete_event_id'] ) : 0;
+if ( $delete_id > 0 ) {
+	wp_delete_post( $delete_id, true );
+}
+?>
 <div class="form-block">
 
 	<form id="post" class="acf-form" action="" method="post">
@@ -157,5 +164,36 @@
 		</div>
 
 	</form>
+
+</div>
+
+<div class="form-block">
+
+	<?php
+	$events = tribe_get_events(
+		array(
+			'posts_per_page' => -1,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+			'tax_query'      => [
+				[
+					'taxonomy' => 'tribe_events_cat',
+					'field'    => 'slug',
+					'terms'    => get_post_field( 'post_name', $user_info->data->chapter ),
+				],
+			],
+		)
+	);
+	?>
+	<h3>Chapter Events</h3>
+
+	<ul class="list-group">
+	<?php
+	foreach ( $events as $event ) :
+		$delete_url = home_url( 'dashboard/add-event/?delete_event_id=' );
+		?>
+		<li class="list-group-item"><?php echo $event->post_title; ?> <a href="<?php echo $delete_url . $event->ID; ?>" class="badge badge-error">Delete</a></li>
+	<?php endforeach; ?>
+	</ul>
 
 </div>

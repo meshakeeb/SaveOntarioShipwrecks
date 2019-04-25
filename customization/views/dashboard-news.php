@@ -1,5 +1,11 @@
 <?php
 wp_enqueue_media();
+
+// Delete news.
+$delete_id = isset( $_GET['delete_id'] ) ? absint( $_GET['delete_id'] ) : 0;
+if ( $delete_id > 0 ) {
+	wp_delete_post( $delete_id, true );
+}
 ?>
 <div class="form-block">
 
@@ -12,17 +18,20 @@ wp_enqueue_media();
 		<p>
 			<span id="j_photo" style="display:block"></span>
 		</p>
+
 		<input type="hidden" name="j_photo" class="j_photo" />
+
 		<button class="btn btn-default featuredUpload" style="cursor: pointer">Add Featured Image</button>
+
 		<p>&nbsp;</p>
 
 		<?php
 		if (
-			in_array( 'provincial_membership', $user_info->roles, true ) ||
-			in_array( 'administrator', $user_info->roles, true ) ||
-			in_array( 'board', $user_info->roles, true )
+			$user_info->has_cap( 'provincial_membership' ) ||
+			$user_info->has_cap( 'administrator' ) ||
+			$user_info->has_cap( 'board' )
 		) :
-		?>
+			?>
 
 		<p>
 			<strong>Type of content:</strong>
@@ -36,101 +45,118 @@ wp_enqueue_media();
 		<p>
 			<label>Category</label>
 			<?php
-			$args = array(
-				'show_option_all'   => '',
-				'show_option_none'  => '',
-				'option_none_value' => '-- Select Category --',
-				'orderby'           => 'name',
-				'order'             => 'ASC',
-				'show_count'        => 0,
-				'hide_empty'        => 0,
-				'child_of'          => 0,
-				'exclude'           => '',
-				'include'           => '',
-				'echo'              => 1,
-				'selected'          => 0,
-				'hierarchical'      => 0,
-				'name'              => 'post_category',
-				'id'                => '',
-				'class'             => 'form-control',
-				'depth'             => 0,
-				'tab_index'         => 0,
-				'taxonomy'          => 'category',
-				'hide_if_empty'     => false,
-				'value_field'       => 'name',
+			wp_dropdown_categories(
+				array(
+					'show_option_all'   => '',
+					'show_option_none'  => '',
+					'option_none_value' => '-- Select Category --',
+					'orderby'           => 'name',
+					'order'             => 'ASC',
+					'show_count'        => 0,
+					'hide_empty'        => 0,
+					'child_of'          => 0,
+					'exclude'           => '',
+					'include'           => '',
+					'echo'              => 1,
+					'selected'          => 0,
+					'hierarchical'      => 0,
+					'name'              => 'post_category',
+					'id'                => '',
+					'class'             => 'form-control',
+					'depth'             => 0,
+					'tab_index'         => 0,
+					'taxonomy'          => 'category',
+					'hide_if_empty'     => false,
+					'value_field'       => 'name',
+				)
 			);
-			wp_dropdown_categories( $args );
 			?>
 		</p>
 		<?php else : ?>
-			<p>
-				<input type="hidden" name="content_type" value="post">
-				<input type="hidden" name="post_category" value="<?php echo $category->name; ?>">
-			</p>
+		<p>
+			<input type="hidden" name="content_type" value="post">
+			<input type="hidden" name="post_category" value="<?php echo $category->name; ?>">
+		</p>
 		<?php endif; ?>
 
-	<div class="clear"></div>
-	<?php
-	$settings = array(
-		'media_buttons' => true,
-		'textarea_name' => 'bolt_news',
-		'textarea_rows' => get_option( 'default_post_edit_rows', 20 ),
-		'tabindex'      => '',
-		'teeny'         => true,
-		'dfw'           => false,
-		'tinymce'       => true,
-		'quicktags'     => true,
-	);
-	wp_editor( '', 'bolt_event', $settings );
-	?>
+		<div class="clear"></div>
+		<?php
+		$settings = array(
+			'media_buttons' => true,
+			'textarea_name' => 'bolt_news',
+			'textarea_rows' => get_option( 'default_post_edit_rows', 20 ),
+			'tabindex'      => '',
+			'teeny'         => true,
+			'dfw'           => false,
+			'tinymce'       => true,
+			'quicktags'     => true,
+		);
+		wp_editor( '', 'bolt_event', $settings );
+		?>
 
-	<input type="hidden" name="userID" value="<?php echo $user_info->ID; ?>">
-	<input type="hidden" name="action" value="add_news">
-	<?php wp_nonce_field( 'add_event_nonce', 'nonce_field' ); ?>
+		<input type="hidden" name="userID" value="<?php echo $user_info->ID; ?>">
 
-	<p>&nbsp;</p>
-	<p><label>Attachment</label><span id="j_attachment" style="display:block"></span></p>
-	<ul class="clonable">
-		<li>
-			<p>
-				<span id="j_attachment_0" class="img_container"></span>
-				<input type="hidden" name="j_attachment[]" class="j_attachment_0" value="" />
-				<button  class="btn btn-default attachmentUpload" style="cursor: pointer">Upload Attachment</button>
-			</p>
-		</li>
-	</ul>
-	<p align="right"><button class="clone_attachment">Add More Attachment</button></p>
+		<input type="hidden" name="action" value="add_news">
 
-	<p><button class="button custom-content-button">Publish</button></p>
-</form>
+		<?php wp_nonce_field( 'add_event_nonce', 'nonce_field' ); ?>
+
+		<p>&nbsp;</p>
+
+		<p><label>Attachment</label><span id="j_attachment" style="display:block"></span></p>
+
+		<ul class="clonable">
+			<li>
+				<p>
+					<span id="j_attachment_0" class="img_container"></span>
+					<input type="hidden" name="j_attachment[]" class="j_attachment_0" value="" />
+					<button  class="btn btn-default attachmentUpload" style="cursor: pointer">Upload Attachment</button>
+				</p>
+			</li>
+		</ul>
+
+		<p align="right"><button class="clone_attachment">Add More Attachment</button></p>
+
+		<p><button class="button custom-content-button">Publish</button></p>
+	</form>
+
 </div>
 
-<?php if ( in_array( 'provincial_membership', $user_info->roles ) || in_array( 'administrator', $user_info->roles) || $user_info->has_cap('bolt_chapter_editor') || $user_info->has_cap('edit_posts')  ) : ?>
+<?php
+if (
+	$user_info->has_cap( 'provincial_membership' ) ||
+	$user_info->has_cap( 'administrator' ) ||
+	$user_info->has_cap( 'bolt_chapter_editor' ) ||
+	$user_info->has_cap( 'edit_posts' )
+	) :
+	?>
 	<div class="form-block">
 
 		<?php
-
-			$category = ( ( in_array("provincial_membership", $user_info->roles) || in_array("administrator", $user_info->roles) ) &&  !$user_info->has_cap('bolt_chapter_editor') ) ? '' : get_the_title($user_info->data->chapter);
-			$heading_title = ( ( in_array("provincial_membership", $user_info->roles) || in_array("administrator", $user_info->roles) ) &&  !$user_info->has_cap('bolt_chapter_editor') ) ? "All" : get_the_title($user_info->data->chapter);
-
-			$args = array(
-			'posts_per_page'   => -1,
-			'offset'           => 0,
-			'category_name'    => $category,
-			'orderby'          => 'title',
-			'order'            => 'ASC',
-			'post_type'        => 'post',
-			'post_status'      => 'publish',
-			'suppress_filters' => true,
-			'fields'           => '',
+		$should_all    = ( $user_info->has_cap( 'provincial_membership' ) || $user_info->has_cap( 'administrator' ) ) && ! $user_info->has_cap( 'bolt_chapter_editor' );
+		$category      = $should_all ? '' : get_the_title( $user_info->data->chapter );
+		$heading_title = $should_all ? 'All' : get_the_title( $user_info->data->chapter );
+		$products      = get_posts(
+			array(
+				'posts_per_page'   => -1,
+				'offset'           => 0,
+				'category_name'    => $category,
+				'orderby'          => 'title',
+				'order'            => 'ASC',
+				'post_type'        => 'post',
+				'post_status'      => 'publish',
+				'suppress_filters' => true,
+				'fields'           => '',
+			)
 		);
-		$posts_array = get_posts( $args );
 		?>
 		<h3><?php echo $heading_title; ?> Chapter News</h3>
 
 		<ul class="list-group">
-		<?php foreach($posts_array as $p) : ?>
-			<li class="list-group-item"><?php echo $p->post_title; ?> <a href="<?php echo get_permalink($p->ID); ?>?post=<?php echo $p->ID; ?>" class="badge">Edit</a></li>
+		<?php
+		foreach ( $products as $product ) :
+			$delete_url = home_url( 'dashboard/add-news/?delete_id=' );
+			?>
+			<li class="list-group-item"><?php echo $product->post_title; ?> <a href="<?php echo $delete_url . $product->ID; ?>" class="badge badge-error">Delete</a> <a href="<?php echo get_permalink( $product->ID ); ?>?post=<?php echo $product->ID; ?>" class="badge">Edit</a></li>
 		<?php endforeach; ?>
 		</ul>
 
@@ -138,8 +164,8 @@ wp_enqueue_media();
 <?php endif; ?>
 
 <script>
-	function AppendImage(imageUrl, imgDiv){
-	  jQuery("#"+imgDiv).empty().prepend('<img src="'+imageUrl+'" style="width: 150px; height: auto">');
+	function AppendImage( imageUrl, imgDiv ) {
+		jQuery("#"+imgDiv).empty().prepend('<img src="'+imageUrl+'" style="width: 150px; height: auto">');
 	}
 
 	jQuery(document).ready( function($) {

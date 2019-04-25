@@ -12,6 +12,11 @@
 
 acf_form_head();
 
+// Delete product.
+$delete_id = isset( $_GET['delete_id'] ) ? absint( $_GET['delete_id'] ) : 0;
+if ( $delete_id > 0 ) {
+	wp_delete_post( $delete_id, true );
+}
 get_header();
 
 get_template_part( 'templates/page', 'header' );
@@ -69,11 +74,12 @@ get_template_part( 'templates/page', 'header' );
 
 					<ul class="list-group">
 					<?php
-					$page_url = home_url( 'dashboard/add-product/?post_id=' );
+					$page_url   = home_url( 'dashboard/add-product/?post_id=' );
+					$delete_url = home_url( 'dashboard/add-product/?delete_id=' );
 					foreach ( $products as $product ) :
 						?>
 						<li class="list-group-item">
-							<?php echo $product->post_title; ?> <a href="<?php echo $page_url . $product->ID; ?>" class="badge">Edit</a>
+							<?php echo $product->post_title; ?> <a href="<?php echo $delete_url . $product->ID; ?>" class="badge badge-error">Delete</a> <a href="<?php echo $page_url . $product->ID; ?>" class="badge">Edit</a>
 						</li>
 					<?php endforeach; ?>
 					</ul>

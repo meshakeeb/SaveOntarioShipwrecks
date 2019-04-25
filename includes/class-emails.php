@@ -58,7 +58,7 @@ class Emails {
 	 *
 	 * @return string
 	 */
-	public function get_content_type() {
+	public function mail_content_type() {
 		return 'text/html';
 	}
 
@@ -98,7 +98,7 @@ class Emails {
 	 */
 	private function add_filters() {
 		// Add filter to enable html encoding
-		$this->filter( 'wp_mail_content_type', 'get_content_type' );
+		$this->filter( 'wp_mail_content_type', 'mail_content_type' );
 
 		// Temporary change the from name and from email
 		$this->filter( 'wp_mail_from_name', 'mail_from_name', 20, 1 );
@@ -109,7 +109,7 @@ class Emails {
 	 * Remove temporary filters.
 	 */
 	private function remove_filters() {
-		$this->remove_filter( 'wp_mail_content_type', 'get_content_type' );
+		$this->remove_filter( 'wp_mail_content_type', 'mail_content_type' );
 		$this->remove_filter( 'wp_mail_from_name', 'mail_from_name', 20, 1 );
 		$this->remove_filter( 'wp_mail_from', 'mail_from', 20, 1 );
 	}

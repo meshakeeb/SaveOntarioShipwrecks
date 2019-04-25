@@ -26,6 +26,9 @@ class Subscription {
 	 */
 	public function __construct() {
 		$this->action( 'pms_member_update_subscription', 'renew_family_members', 10, 6 );
+		$this->filter( 'pms_members_list_table_columns', 'members_list_table_columns', 10 );
+		$this->filter( 'pms_members_list_table_entry_data', 'members_list_table_entry_data', 10 );
+		$this->filter( 'pms_recover_password_form_password_changed_message', 'recover_password_form_password_changed_message' );
 	}
 
 	/**
@@ -68,6 +71,65 @@ class Subscription {
 		$this->action( 'pms_member_update_subscription', 'renew_family_members', 10, 6 );
 	}
 
+	/**
+	 * Add new column in member list.
+	 *
+	 * @param array $columns List of columns.
+	 *
+	 * @return array
+	 */
+	public function members_list_table_columns( $columns ) {
+		$columns['family_parent_account'] = 'Family Parent';
+
+		return $columns;
+	}
+
+	/**
+	 * Add family account data for display.
+	 *
+	 * @param array $data Current row member data.
+	 *
+	 * @return array
+	 */
+	public function members_list_table_entry_data( $data ) {
+		$parent = get_user_meta( $data['user_id'], 'parent_family_id', true );
+		$parent = pms_get_member( $parent );
+
+		$data['family_parent_account'] = $parent->username;
+		return $data;
+	}
+
+	/**
+	 * Change recover password message.
+	 *
+	 * @return string
+	 */
+	public function recover_password_form_password_changed_message() {
+		$url = $this->get_pms_login_page_url();
+		if ( '' !== $url ) {
+			$url = sprintf( ' <a href="%s">Click here to login</a>.', $url );
+		}
+		return '<p>' . 'Your password was successfully changed!' . $url . '</p>';
+	}
+
+	/**
+	 * Get PMS login page url.
+	 *
+	 * @return bool|string
+	 */
+	private function get_pms_login_page_url() {
+		$settings = get_option( 'pms_general_settings' );
+
+		return isset( $settings['login_page'] ) && -1 !== $settings['login_page'] ? get_permalink( $settings['login_page'] ) : '';
+	}
+
+	/**
+	 * Is user parent-user for family subscription.
+	 *
+	 * @param int  $user_id User id.
+	 *
+	 * @return bool
+	 */
 	public static function is_family_parent( $user_id = null ) {
 		if ( is_null( $user_id ) ) {
 			$user_id = get_current_user_id();
@@ -86,6 +148,13 @@ class Subscription {
 		return false;
 	}
 
+	/**
+	 * Is sub-account for a family subscrption.
+	 *
+	 * @param int  $user_id User id.
+	 *
+	 * @return bool
+	 */
 	public static function is_family_member( $user_id = null ) {
 		if ( is_null( $user_id ) ) {
 			$user_id = get_current_user_id();

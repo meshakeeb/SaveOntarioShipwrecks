@@ -36,7 +36,12 @@ class Theme_Setup {
 		$this->filter( 'excerpt_length', 'excerpt_length', 999 );
 		$this->filter( 'mc4wp_form_css_classes', 'mc4wp_form_css_classes' );
 		$this->filter( 'the_content', 'shortcode_fix_empty_paragraph' );
-		$this->filter( 'wp_mail_content_type', 'set_mail_content_type' );
+
+		// Mail.
+		$email = new Emails;
+		add_filter( 'wp_mail_from', [ $email, 'mail_from' ], 20, 1 );
+		add_filter( 'wp_mail_from_name', [ $email, 'mail_from_name' ], 20, 1 );
+		add_filter( 'wp_mail_content_type', [ $email, 'mail_content_type' ] );
 
 		// Search.
 		$this->filter( 'posts_join', 'search_join' );
@@ -322,13 +327,6 @@ class Theme_Setup {
 	}
 
 	/**
-	 * Set email content tye to html.
-	 */
-	public function set_mail_content_type() {
-		return 'text/html';
-	}
-
-		/**
 	 * Add logout link to both location.
 	 *
 	 * @param string   $items The HTML list content for the menu items.

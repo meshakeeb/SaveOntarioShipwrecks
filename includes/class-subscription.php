@@ -89,7 +89,7 @@ class Subscription {
 			$replace = array(
 				get_user_meta( $user->ID, 'billing_first_name', true ),
 				get_user_meta( $user->ID, 'billing_last_name', true ),
-				'15 days',
+				'15 days', //$date->diff( $now )->format( '%d days' )
 				date_format( date_create( $user->expiration_date ), 'F d, Y' ),
 				get_the_title( $user->subscription_plan_id ),
 				get_bloginfo( 'url' ) . '/login',

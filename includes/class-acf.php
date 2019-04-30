@@ -44,7 +44,7 @@ class ACF {
 	 * @return array
 	 */
 	public function acf_google_map_api( $api ) {
-		$api['key'] = 'AIzaSyDNsicAsP6-VuGtAb1O9riI3oc_NOb7IOU';
+		$api['key'] = 'AIzaSyCOky9W-ZqebN965Vy-X137_Do4jMicjcU';
 
 		return $api;
 	}

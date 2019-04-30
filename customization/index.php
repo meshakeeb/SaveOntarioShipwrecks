@@ -121,13 +121,6 @@ add_action(
 	2
 );
 
-add_action(
-	'pms_member_subscription_update',
-	array($boltPDF,'generatePDFArgs2'),
-	15,
-	2
-);
-
 add_action('pdf_hook', array($boltPDF,'generatePDF'), 99, 2);
 
 // PMS REGISTRATION FORM OVERRIDE

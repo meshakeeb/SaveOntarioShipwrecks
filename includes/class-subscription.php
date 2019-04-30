@@ -26,6 +26,7 @@ class Subscription {
 	 */
 	public function __construct() {
 		$this->action( 'pms_member_update_subscription', 'renew_family_members', 10, 6 );
+		$this->action( 'pms_check_subscription_status', 'check_subscription_status' );
 		$this->filter( 'pms_members_list_table_columns', 'members_list_table_columns', 10 );
 		$this->filter( 'pms_members_list_table_entry_data', 'members_list_table_entry_data', 10 );
 		$this->filter( 'pms_recover_password_form_password_changed_message', 'recover_password_form_password_changed_message' );
@@ -69,6 +70,52 @@ class Subscription {
 		}
 
 		$this->action( 'pms_member_update_subscription', 'renew_family_members', 10, 6 );
+	}
+
+	/**
+	 * Check status if 15 days to expire send a reminder.
+	 */
+	public function check_subscription_status() {
+		$users = $this->get_users_about_to_expire();
+		if ( empty( $users ) ) {
+			return;
+		}
+
+		$sender = new Emails;
+		$email  = get_option( 'email_reminder' );
+		$search = [ '{fname}', '{lname}', '{days}', '{expiration}', '{account_type}', '{login_link}' ];
+		foreach ( $users as $user ) {
+			$now     = new DateTime;
+			$date    = new DateTime( $user->expiration_date );
+			$replace = array(
+				get_user_meta( $user->ID, 'billing_first_name', true ),
+				get_user_meta( $user->ID, 'billing_last_name', true ),
+				$date->diff( $now )->format( '%d days' ),
+				date_format( date_create( $user->expiration_date ), 'F d, Y' ),
+				get_the_title( $user->subscription_plan_id ),
+				get_bloginfo( 'url' ) . '/login',
+			);
+			$content = str_replace( $search, $replace, $email['content'] );
+			$sender->send( $user->user_email, $email['title'], wpautop( $content ) );
+		}
+	}
+
+	/**
+	 * Get users to send reminder.
+	 *
+	 * @return array
+	 */
+	private function get_users_about_to_expire() {
+		global $wpdb;
+
+		return $wpdb->get_results(
+			"SELECT * FROM
+			{$wpdb->prefix}pms_member_subscriptions as SUBSCRIPTION
+			LEFT JOIN {$wpdb->prefix}users AS USER
+			ON SUBSCRIPTION.user_id = USER.id
+			WHERE SUBSCRIPTION.status = 'active'
+			AND SUBSCRIPTION.expiration_date BETWEEN NOW() AND ADDDATE(NOW(), INTERVAL 15 DAY)"
+		);
 	}
 
 	/**

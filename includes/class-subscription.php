@@ -10,6 +10,7 @@
 
 namespace Ontario;
 
+use DateTime;
 use Ontario\Traits\Hooker;
 
 defined( 'ABSPATH' ) || exit;
@@ -85,12 +86,10 @@ class Subscription {
 		$email  = get_option( 'email_reminder' );
 		$search = [ '{fname}', '{lname}', '{days}', '{expiration}', '{account_type}', '{login_link}' ];
 		foreach ( $users as $user ) {
-			$now     = new DateTime;
-			$date    = new DateTime( $user->expiration_date );
 			$replace = array(
 				get_user_meta( $user->ID, 'billing_first_name', true ),
 				get_user_meta( $user->ID, 'billing_last_name', true ),
-				$date->diff( $now )->format( '%d days' ),
+				'15 days',
 				date_format( date_create( $user->expiration_date ), 'F d, Y' ),
 				get_the_title( $user->subscription_plan_id ),
 				get_bloginfo( 'url' ) . '/login',
@@ -114,7 +113,7 @@ class Subscription {
 			LEFT JOIN {$wpdb->prefix}users AS USER
 			ON SUBSCRIPTION.user_id = USER.id
 			WHERE SUBSCRIPTION.status = 'active'
-			AND SUBSCRIPTION.expiration_date BETWEEN NOW() AND ADDDATE(NOW(), INTERVAL 15 DAY)"
+			AND SUBSCRIPTION.expiration_date = DATE_FORMAT( ADDDATE( NOW(), INTERVAL 15 DAY ), \"%Y-%m-%d 00:00:00\" )"
 		);
 	}
 

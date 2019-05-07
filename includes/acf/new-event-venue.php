@@ -8,6 +8,9 @@
  * @author     BoltMedia <info@boltmedia.ca>
  */
 
+$event_id = isset( $_GET['event_id'] ) ? $_GET['event_id'] : false;
+$venue_id = $event_id ? get_post_meta( $event_id, '_EventVenueID', true ) : 0;
+
 acf_add_local_field_group(
 	[
 		'key'    => 'bolt_event_venues',
@@ -29,6 +32,7 @@ acf_add_local_field_group(
 				'multiple'          => 0,
 				'return_format'     => 'id',
 				'ui'                => 1,
+				'value'             => $venue_id,
 			],
 
 			[

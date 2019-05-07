@@ -26,10 +26,13 @@ if ( $delete_id > 0 ) {
 					<div class="panel-body">
 
 						<?php
+						add_action( 'acf/validate_post_id', function( $post_id ) {
+							return isset( $_GET['event_id'] ) ? absint( $_GET['event_id'] ) : $post_id;
+						});
 						acf_form(
 							array(
 								'id'                   => 'bolt_user_events',
-								'post_id'              => 'new_post',
+								'post_id'              => isset( $_GET['event_id'] ) ? absint( $_GET['event_id'] ) : 'new_post',
 								'new_post'             => array(
 									'post_type'   => 'tribe_events',
 									'post_status' => 'publish',
@@ -132,11 +135,8 @@ if ( $delete_id > 0 ) {
 					acf_form(
 						array(
 							'id'                   => 'bolt_event_cost',
-							'post_id'              => 'new_post',
-							'new_post'             => array(
-								'post_type'   => 'tribe_events',
-								'post_status' => 'publish',
-							),
+							'post_id'              => false,
+							'new_post'             => false,
 							'post_title'           => false,
 							'post_content'         => false,
 							'form'                 => false,
@@ -190,9 +190,10 @@ if ( $delete_id > 0 ) {
 	<ul class="list-group">
 	<?php
 	foreach ( $events as $event ) :
+		$edit_url   = home_url( 'dashboard/add-event/?event_id=' );
 		$delete_url = home_url( 'dashboard/add-event/?delete_event_id=' );
 		?>
-		<li class="list-group-item"><?php echo $event->post_title; ?> <a href="<?php echo $delete_url . $event->ID; ?>" class="badge badge-error">Delete</a></li>
+		<li class="list-group-item"><?php echo $event->post_title; ?> <a href="<?php echo $delete_url . $event->ID; ?>" class="badge badge-error">Delete</a> <a href="<?php echo $edit_url . $event->ID; ?>" class="badge badge-error">Edit</a></li>
 	<?php endforeach; ?>
 	</ul>
 

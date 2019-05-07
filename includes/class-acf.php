@@ -219,7 +219,7 @@ class ACF {
 				'ticket_end_date'         => '',
 				'ticket_end_time'         => '',
 				'ticket_sku'              => '',
-				'ticket_id'               => '',
+				'ticket_id'               => isset( $_POST['acf']['ticket_id'] ) && ! empty( $_POST['acf']['ticket_id'] ) ? $_POST['acf']['ticket_id'] : '',
 			]
 		);
 	}

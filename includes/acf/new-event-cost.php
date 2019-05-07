@@ -8,6 +8,11 @@
  * @author     BoltMedia <info@boltmedia.ca>
  */
 
+$event_id   = isset( $_GET['event_id'] ) ? $_GET['event_id'] : false;
+$event_cost = $event_id ? get_post_meta( $event_id, '_EventCost', true ) : 0;
+$ticket     = Tribe__Tickets__Tickets::get_event_tickets( $event_id );
+$ticket     = ! empty( $ticket ) && isset( $ticket[0] ) ? $ticket[0] : false;
+
 acf_add_local_field_group(
 	[
 		'key'    => 'bolt_event_cost',
@@ -20,6 +25,17 @@ acf_add_local_field_group(
 				'label'    => 'Cost',
 				'type'     => 'text',
 				'required' => 0,
+				'value'    => $event_cost,
+			],
+
+			[
+				'key'         => 'ticket_id',
+				'name'        => 'ticket_id',
+				'type'        => 'text',
+				'required'    => 0,
+				'save_custom' => 0,
+				'value'       => $ticket ? $ticket->ID : 0,
+				'wrapper'     => [ 'class' => ' hidden' ],
 			],
 
 			[
@@ -43,6 +59,7 @@ acf_add_local_field_group(
 				'toggle'            => 0,
 				'return_format'     => 'value',
 				'save_custom'       => 0,
+				'value'             => $ticket ? '1' : '0',
 			],
 
 			[
@@ -52,6 +69,7 @@ acf_add_local_field_group(
 				'type'              => 'text',
 				'required'          => 0,
 				'instructions'      => 'Ticket type name shows on the front end and emailed tickets',
+				'value'             => $ticket ? $ticket->name : '',
 				'conditional_logic' => [
 					[
 						[
@@ -70,6 +88,7 @@ acf_add_local_field_group(
 				'type'              => 'text',
 				'required'          => 0,
 				'instructions'      => 'Leave blank for unlimited',
+				'value'             => $ticket && $ticket->capacity > 0 ? $ticket->capacity : '',
 				'conditional_logic' => [
 					[
 						[

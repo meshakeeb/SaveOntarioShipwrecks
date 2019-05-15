@@ -9,9 +9,12 @@
  */
 
 $event_id   = isset( $_GET['event_id'] ) ? $_GET['event_id'] : false;
-$event_cost = $event_id ? get_post_meta( $event_id, '_EventCost', true ) : 0;
-$ticket     = Tribe__Tickets__Tickets::get_event_tickets( $event_id );
-$ticket     = ! empty( $ticket ) && isset( $ticket[0] ) ? $ticket[0] : false;
+$event_cost = $event_id ? get_post_meta( $event_id, '_EventCost', true ) : '';
+$ticket     = '';
+if ( $event_id ) {
+	$ticket = Tribe__Tickets__Tickets::get_event_tickets( $event_id );
+	$ticket = ! empty( $ticket ) && isset( $ticket[0] ) ? $ticket[0] : false;
+}
 
 acf_add_local_field_group(
 	[
@@ -34,7 +37,7 @@ acf_add_local_field_group(
 				'type'        => 'text',
 				'required'    => 0,
 				'save_custom' => 0,
-				'value'       => $ticket ? $ticket->ID : 0,
+				'value'       => $ticket ? $ticket->ID : '',
 				'wrapper'     => [ 'class' => ' hidden' ],
 			],
 

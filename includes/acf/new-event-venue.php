@@ -9,7 +9,7 @@
  */
 
 $event_id = isset( $_GET['event_id'] ) ? $_GET['event_id'] : false;
-$venue_id = $event_id ? get_post_meta( $event_id, '_EventVenueID', true ) : 0;
+$venue_id = $event_id ? get_post_meta( $event_id, '_EventVenueID', true ) : '';
 
 acf_add_local_field_group(
 	[

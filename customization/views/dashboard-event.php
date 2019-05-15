@@ -26,13 +26,21 @@ if ( $delete_id > 0 ) {
 					<div class="panel-body">
 
 						<?php
-						add_action( 'acf/validate_post_id', function( $post_id ) {
-							return isset( $_GET['event_id'] ) ? absint( $_GET['event_id'] ) : $post_id;
-						});
+						function validate_form_args( $args ) {
+							$args['new_post'] = array(
+								'post_type'   => 'tribe_events',
+								'post_status' => 'publish',
+							);
+
+							$args['post_id'] = isset( $_GET['event_id'] ) ? absint( $_GET['event_id'] ) : 'new_post';
+
+							return $args;
+						}
+						add_action( 'acf/validate_form', 'validate_form_args' );
 						acf_form(
 							array(
 								'id'                   => 'bolt_user_events',
-								'post_id'              => isset( $_GET['event_id'] ) ? absint( $_GET['event_id'] ) : 'new_post',
+								'post_id'              => 'new_post',
 								'new_post'             => array(
 									'post_type'   => 'tribe_events',
 									'post_status' => 'publish',

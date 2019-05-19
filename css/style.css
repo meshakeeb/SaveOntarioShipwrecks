@@ -4715,3 +4715,7 @@ display: none;
 #order_review_heading {
 	margin-top:30px;
 }
+
+.panel .acf-input-wrap {
+	height: auto
+}

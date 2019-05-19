@@ -187,7 +187,7 @@ if ( $delete_id > 0 ) {
 				[
 					'taxonomy' => 'tribe_events_cat',
 					'field'    => 'slug',
-					'terms'    => get_post_field( 'post_name', $user_info->data->chapter ),
+					'terms'    => [ 'courses', get_post_field( 'post_name', $user_info->data->chapter ) ],
 				],
 			],
 		)

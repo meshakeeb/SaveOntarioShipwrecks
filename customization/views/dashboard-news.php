@@ -140,8 +140,6 @@ if (
 				'posts_per_page'   => -1,
 				'offset'           => 0,
 				'category_name'    => $category,
-				'orderby'          => 'title',
-				'order'            => 'ASC',
 				'post_type'        => 'post',
 				'post_status'      => 'publish',
 				'suppress_filters' => true,

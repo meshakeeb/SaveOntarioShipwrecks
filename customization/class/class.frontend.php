@@ -524,7 +524,7 @@ class BoltMediaFront {
 			array_push( $to, $user->user_email );
 		}
 
-		\Ontario\Email_Queue::add_email_to_queue( $to, $_POST['post_title'], $_POST['bolt_newsletter'] );
+		\Ontario\Email_Queue::add_email_to_queue( $to, $_POST['post_title'], wpautop( stripslashes( $_POST['bolt_newsletter'] ) ) );
 		echo '<div class="alert alert-success">Newsletter Sent</div>';
 	}
 

@@ -181,8 +181,8 @@ if ( $delete_id > 0 ) {
 	$events = tribe_get_events(
 		array(
 			'posts_per_page' => -1,
-			'orderby'        => 'title',
-			'order'          => 'ASC',
+			'orderby'        => 'date',
+			'order'          => 'DESC',
 			'tax_query'      => [
 				[
 					'taxonomy' => 'tribe_events_cat',

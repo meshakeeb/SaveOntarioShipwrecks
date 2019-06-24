@@ -471,7 +471,7 @@ class BoltMediaFront {
 			exit( 'The form is not valid' );
 		}
 
-		if ( '' === $data['userID'] || '' === $data['post_category'] ) {
+		if ( '' === $data['post_category'] ) {
 			return '<div class="alert alert-danger">ERROR: Category or Author Missing.</div>';
 		}
 
@@ -519,8 +519,8 @@ class BoltMediaFront {
 			array_push( $to, $u->user_email );
 		}
 
-		if ( isset( $_POST['send_me'] ) && $_POST['send_me'] ) {
-			$user = get_userdata( $_POST['userID'] );
+		if ( isset( $_POST['send_me'] ) && 1 === absint( $_POST['send_me'] ) ) {
+			$user = wp_get_current_user();
 			array_push( $to, $user->user_email );
 		}
 

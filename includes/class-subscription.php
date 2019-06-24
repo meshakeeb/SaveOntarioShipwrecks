@@ -26,11 +26,32 @@ class Subscription {
 	 * The class constructor.
 	 */
 	public function __construct() {
+		$this->action( 'rest_api_init', 'rest_api_init' );
+		$this->action( 'pms_member_edit_form_field', 'member_edit_form_field' );
 		$this->action( 'pms_member_update_subscription', 'renew_family_members', 10, 6 );
 		$this->action( 'pms_check_subscription_status', 'check_subscription_status' );
 		$this->filter( 'pms_members_list_table_columns', 'members_list_table_columns', 10 );
 		$this->filter( 'pms_members_list_table_entry_data', 'members_list_table_entry_data', 10 );
 		$this->filter( 'pms_recover_password_form_password_changed_message', 'recover_password_form_password_changed_message' );
+	}
+
+	/**
+	 * Rest api init.
+	 */
+	public function rest_api_init() {
+		$this->filter( 'rest_user_query', 'fix_user_rest_search_for_editing' );
+	}
+
+	/**
+	 * Fix user search for rest.
+	 *
+	 * @param array $args Query arguments.
+	 *
+	 * @return array
+	 */
+	public function fix_user_rest_search_for_editing( $args ) {
+		unset( $args['has_published_posts'] );
+		return $args;
 	}
 
 	/**
@@ -211,5 +232,117 @@ class Subscription {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Member edit form fields
+	 */
+	public function member_edit_form_field() {
+		// Change Parent
+		if ( isset( $_POST['action'] ) ) {
+			if ( 'change_parent' === $_POST['action'] ) {
+
+				if ( isset( $_POST['change_parent'] ) ) {
+					update_user_meta( $_POST['user_id'], 'parent_family_id', $_POST['new_parent'] );
+				}
+
+				if ( isset( $_POST['remove_member'] ) ) {
+					delete_user_meta( $_POST['user_id'], 'parent_family_id' );
+				}
+			}
+
+			if ( 'add_new_family_member' === $_POST['action'] ) {
+				update_user_meta( $_POST['new_member'], 'parent_family_id', $_POST['parent_user_id'] );
+			}
+		}
+
+		$member = pms_get_member( (int) trim( $_REQUEST['member_id'] ) );
+		?>
+		<br />
+		<h3><?php echo $this->is_family_parent( $member->user_id ) ? __( 'Family Members', 'paid-member-subscriptions' ) : __( 'Family Parent', 'paid-member-subscriptions' ); ?></h3>
+		<?php
+
+		$memberlist = get_users(
+			[
+				'meta_key'   => 'parent_family_id',
+				'meta_value' => $member->user_id,
+			]
+		);
+
+		?>
+		<table class="wp-list-table widefat fixed striped member-payments">
+			<thead>
+				<tr>
+					<th scope="col">Member Name</th>
+					<th scope="col" id="actions" class="manage-column column-actions"></th>
+				</tr>
+			</thead>
+
+			<tbody id="the-list">
+				<?php if ( empty( $memberlist ) ) : ?>
+				<tr class="no-items">
+					<td class="colspanchange" colspan="2"><?php _e( 'No family members found.', 'paid-member-subscriptions' ); ?></td>
+				</tr>
+				<?php else : ?>
+					<?php foreach ( $memberlist as $user ) : ?>
+						<tr>
+							<td><?php echo $user->display_name; ?></td>
+							<td>
+								<form action="" method="post">
+									<select class="user-select2" name="new_parent" style="width:250px">
+										<option value="<?php echo $member->user_id; ?>" selected="selected"><?php echo $member->username; ?></option>
+									</select>
+									<input type="hidden" name="user_id" value="<?php echo $user->ID; ?>">
+									<input type="hidden" name="action" value="change_parent">
+									<button type="submit" class="button" name="change_parent">Change</button>
+									<button type="submit" class="button" name="remove_member">Remove Member</button>
+								</form>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</tbody>
+		</table>
+
+		<br />
+		<h3><?php _e( 'Add new member in Family', 'paid-member-subscriptions' ); ?></h3>
+
+		<form action="" method="post">
+			<select class="user-select2" name="new_member" style="width:300px">
+			</select>
+			<input type="hidden" name="parent_user_id" value="<?php echo $member->user_id; ?>">
+			<input type="hidden" name="action" value="add_new_family_member">
+			<button type="submit" class="button">Add New Member</button>
+		</form>
+
+		<script type="text/javascript">
+			(function( $ ) {
+				$(document).ready(function() {
+					$( '.user-select2' ).select2({
+						ajax: {
+							url: '<?php echo rest_url( 'wp/v2/users/' ); ?>',
+							data: function (params) {
+								var query = {
+									search: params.term
+								}
+								return query;
+							},
+							processResults: function ( data ) {
+								var newData = []
+								data.forEach(function( item ) {
+									newData.push( { id: item.id, text: item.slug } )
+								})
+								return {
+									results: newData
+								}
+							}
+						}
+					});
+				});
+			})( jQuery );
+		</script>
+		<?php
+		wp_enqueue_style( 'select2', plugins_url( 'assets/css/select2.css', WC_PLUGIN_FILE ) );
+		wp_enqueue_script( 'selectWoo' );
 	}
 }

@@ -44,8 +44,8 @@ class Shortcodes {
 			'panel',
 			'tabs',
 			'tab',
-			'tab-w',
-			'tab-c',
+			'tab-wrapper',
+			'tab-content',
 			'clear',
 		];
 
@@ -94,7 +94,7 @@ class Shortcodes {
 	 *
 	 * @return string
 	 */
-	public function columns( $atts, $content = '' ) {
+	public function column( $atts, $content = '' ) {
 		extract( // phpcs:ignore
 			shortcode_atts(
 				[ 'number' => '' ],
